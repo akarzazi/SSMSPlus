@@ -1,0 +1,17 @@
+# --------------------------------
+# Visual Studio
+# --------------------------------
+/**/.vs/
+/**/.vscode
+
+#exclusions at solution level
+*.suo
+_ReSharper.*/
+packages/
+TestResults/
+
+#exclusions in projects folders
+/**/*.user
+/**/obj/
+/**/bin/
+/**/*.Cache

@@ -1,0 +1,25 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"                   
+                    xmlns:search="clr-namespace:SSMSPlusCore.Ui.Search">
+
+    <Style TargetType="FlowDocument" >
+        <Setter Property="IsOptimalParagraphEnabled" Value="False" />
+        <Setter Property="IsHyphenationEnabled" Value="False" />
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+        <Setter Property="FontFamily" Value="Courier New" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="TextAlignment" Value="Left" />
+    </Style>
+
+    <Style TargetType="search:RunFragment">
+        <Style.Triggers>
+            <Trigger Property="TextFragmentType" Value="Primary">
+                <Setter Property="FontWeight" Value="DemiBold" />
+            </Trigger>
+            <Trigger Property="TextFragmentType" Value="Highlight">
+                <Setter Property="Background" Value="Gold" />
+                <Setter Property="FontWeight" Value="DemiBold" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

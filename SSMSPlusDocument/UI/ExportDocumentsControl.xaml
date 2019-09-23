@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="SSMSPlusDocument.UI.ExportDocumentsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:conv="clr-namespace:SSMSPlusCore.Ui.Converters;assembly=SSMSPlusCore"
+             xmlns:ext="clr-namespace:SSMSPlusCore.Ui.Extensions;assembly=SSMSPlusCore"
+             xmlns:local="clr-namespace:SSMSPlusDocument.UI"
+             mc:Ignorable="d" 
+             Background="{DynamicResource {x:Static SystemColors.MenuBarBrushKey}}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Margin="12" ext:GridExtensions.Structure="*,*|*">
+        <Grid  ext:GridExtensions.Structure="auto,auto,*,auto,auto|*">
+            <Grid Grid.Row="0" Background="Transparent" Margin="0,0,0,12" ext:GridExtensions.Structure="auto,auto|auto,auto,*">
+                <Label FontSize="26" VerticalAlignment="Center">SSMS Plus</Label>
+                <TextBlock  Grid.Column="1" FontSize="12" VerticalAlignment="Center">Document <LineBreak/> Export</TextBlock>
+                <Separator Grid.Row="1" Grid.ColumnSpan="10"></Separator>
+                <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding DbDisplayName}"></TextBlock>
+                </StackPanel>
+            </Grid>
+
+            <TextBox Grid.Row="1" MaxLines="1" xml:space="preserve" Margin="0,0,0,10" 
+                IsReadOnly="True"   TextWrapping="Wrap"   Background="Transparent"         BorderThickness="0"     
+                     >Two columns are expected, corresponding respectively to file name and file content.
+            </TextBox>
+
+            <TextBox Grid.Row="2" MinHeight="100" VerticalAlignment="Stretch" Margin="0,0,0,10" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" Text="{Binding SqlQuery}"></TextBox>
+
+            <Grid Grid.Row="3" Margin="0,0,0,10" ext:GridExtensions.Structure="auto|1*,3*">
+                <Button Command="{Binding ChooseFolderCmd}" Margin="0,0,10,0" Padding="4">Choose export folder ...</Button>
+                <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding FolderPath}" Padding="4"></TextBox>
+            </Grid>
+            <Grid Grid.Row="4" Margin="0,0,0,10" ext:GridExtensions.Structure="auto|1*,1*,1*,1*">
+                <Button IsEnabled="{Binding CanExport}" Command="{Binding ExportFilesCmd}" Margin="0,0,10,0" Padding="4">Export</Button>
+                <Button Grid.Column="1" IsEnabled="{Binding IsExporting}" Command="{Binding CancelExportFilesCmd}" Margin="0,0,10,0" Padding="4">Cancel</Button>
+            </Grid>
+        </Grid>
+        
+        <GridSplitter Grid.Row="1" Background="Transparent" Height="10" HorizontalAlignment="Stretch" Margin="0" 
+                      VerticalAlignment="Top"
+                      ResizeDirection="Rows"
+                      ResizeBehavior="BasedOnAlignment"
+                      ShowsPreview="False"
+                      />
+
+        <RichTextBox Grid.Row="1" Margin="0,10,0,0" Background="Transparent" Foreground="White" FontFamily="Consolas"  AcceptsReturn="True" AcceptsTab="True"
+                       ext:RichTextBoxHelper.RunStream="{Binding ConsoleOutput}" IsReadOnly="True" VerticalScrollBarVisibility="Auto"
+                     ></RichTextBox>
+    </Grid>
+</UserControl>

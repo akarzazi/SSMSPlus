@@ -1,0 +1,2 @@
+- do not update json net because : https://devblogs.microsoft.com/visualstudio/using-newtonsoft-json-in-a-visual-studio-extension/
+- keep static references on DTE2 and CommandEvents instances

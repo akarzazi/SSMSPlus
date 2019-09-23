@@ -1,0 +1,133 @@
+﻿<UserControl  x:Class="SSMSPlusHistory.UI.HistoryControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:ext="clr-namespace:SSMSPlusCore.Ui.Extensions;assembly=SSMSPlusCore"
+             xmlns:conv="clr-namespace:SSMSPlusCore.Ui.Converters;assembly=SSMSPlusCore"
+              xmlns:core="clr-namespace:SSMSPlusCore.Ui.Extensions;assembly=SSMSPlusCore"
+              Background="{DynamicResource {x:Static SystemColors.MenuBarBrushKey}}"
+             mc:Ignorable="d" 
+             d:DesignHeight="850" d:DesignWidth="1000"
+              Focusable="True"
+              IsTabStop="True">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <conv:HighlightToTextBlockConverter x:Key="HighlightToTextBlock" />
+            <ContextMenu  x:Key="RowMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                <MenuItem Header="Open script" CommandParameter="{Binding}"
+                  Command="{Binding DataContext.OpenScriptCmd, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" />
+            </ContextMenu>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/SSMSPlusCore;component/Ui/Design/DataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <UserControl.InputBindings>
+        <KeyBinding Key="F5" Command="{Binding Path=RequestItemsCommand}"/>
+    </UserControl.InputBindings>
+    
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding ViewLoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid Margin="12" ext:GridExtensions.Structure="auto,auto,auto,*|*">
+        <Grid Grid.Row="0" Background="Transparent" Margin="0,0,0,12" ext:GridExtensions.Structure="auto,auto|auto,auto,*">
+            <Label FontSize="26" VerticalAlignment="Center">SSMS Plus</Label>
+            <TextBlock  Grid.Column="1" FontSize="12" VerticalAlignment="Center">Execution <LineBreak/> History</TextBlock>
+            <Separator Grid.Row="1" Grid.ColumnSpan="10"></Separator>
+            <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Button Command="{Binding Path=RequestItemsCommand}" Padding="4">Refresh (F5)</Button>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" ext:GridExtensions.Structure="auto,auto,auto,*|100,1*,100,1*,100,1*" >
+            <Label Grid.Row="0">From :</Label>
+            <DatePicker Grid.Row="0" Grid.Column="1" Margin="0,0,0,10" Width="150" HorizontalAlignment="Left" SelectedDate="{Binding Path=StartDate,UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label Grid.Row="0"  Grid.Column="2">Server :</Label>
+            <TextBox Grid.Row="0" Grid.Column="3" Margin="0,0,0,10" Width="150" Padding="4" HorizontalAlignment="Left" Text="{Binding Path=ServerFilter,UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label Grid.Row="0"  Grid.Column="4">Database :</Label>
+            <TextBox Grid.Row="0" Grid.Column="5" Margin="0,0,0,10" Width="150" Padding="4" HorizontalAlignment="Left" Text="{Binding Path=DbFilter,UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label Grid.Row="1">To:</Label>
+            <DatePicker Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" Width="150" HorizontalAlignment="Left" SelectedDate="{Binding Path=EndDate,UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label Grid.Row="1" Grid.Column="2" >Query:</Label>
+            <TextBox Name="QueryFilter" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="4" Margin="0,0,0,10" Width="400" Padding="4" HorizontalAlignment="Left" 
+                     Text="{Binding Path=QueryFilter,UpdateSourceTrigger=PropertyChanged}"
+                     FocusManager.FocusedElement="{Binding RelativeSource={RelativeSource Self}}"/>
+
+            <Grid.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding Path=RequestItemsCommand}"/>
+            </Grid.InputBindings>
+        </Grid>
+
+        <Label Grid.Row="2" Margin="0,0,0,10" Content="{Binding Path=Message}"></Label>
+
+        <Grid Name="objectsGrid" Grid.Row="3" ext:GridExtensions.Structure="1*,1*|*">
+            <DataGrid Grid.Row="0" MinHeight="100" Style="{StaticResource FastReadOnly}"
+                      ItemsSource="{Binding QueryItemsVM}"
+                      SelectedIndex="0"
+                      SelectedValue="{Binding SelectedItem}">
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="ext:GridExtensions.DoubleClickCommand" Value="{Binding ElementName=objectsGrid, Path=DataContext.OpenScriptCmd}"/>
+                        <Setter Property="ContextMenu" Value="{StaticResource RowMenu}" />
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.Resources>
+                    <ResourceDictionary Source="pack://application:,,,/SSMSPlusCore;component/Ui/Design/DataGridRunFragment.xaml"/>
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Date" Binding="{Binding SearchResult.ExecutionDateLocalStr}" Width="150" />
+                    <!--<DataGridTextColumn Header="Server" Binding="{Binding ServerHighlight}"  Width="150"/>-->
+                    <DataGridTemplateColumn  Width="150" Header="Server" SortMemberPath="SearchResult.QueryItem.Server" ClipboardContentBinding="{Binding SearchResult.QueryItem.Server}" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding ServerHighlight, Mode=OneWay, Converter={StaticResource HighlightToTextBlock}}"></ContentControl>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn  Width="150" Header="Database" SortMemberPath="SearchResult.QueryItem.Database" ClipboardContentBinding="{Binding SearchResult.QueryItem.Database}" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding DatabaseHighlight, Mode=OneWay, Converter={StaticResource HighlightToTextBlock}}"></ContentControl>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn  Width="*" Header="Query" SortMemberPath="SearchResult.SmallQueryFragment.AsString" ClipboardContentBinding="{Binding SearchResult.SmallQueryFragment}" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding SmallQueryHighlight, Mode=OneWay, Converter={StaticResource HighlightToTextBlock}}"></ContentControl>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!--<DataGridTextColumn Header="Database" Binding="{Binding DatabaseHighlight}"  Width="150"/>
+                    <DataGridTextColumn Header="Query" Binding="{Binding SmallQueryHighlight}"  Width="*"/>-->
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <FlowDocumentScrollViewer   Grid.Row="1" Margin="0,10,0,0" BorderBrush="Black" BorderThickness="1" 
+                                        ext:FlowDocumentScrollViewerDocumentHighlightBehavior.HighlightContext="{Binding SelectedItem.QueryHighlight}"                                      
+                                        >
+                <FlowDocumentScrollViewer.Resources>
+                    <ResourceDictionary Source="pack://application:,,,/SSMSPlusCore;component/Ui/Design/SqlFlowDocument.xaml"/>
+                </FlowDocumentScrollViewer.Resources>
+            </FlowDocumentScrollViewer>
+
+            <GridSplitter Height="10" HorizontalAlignment="Stretch" Margin="0"
+                      VerticalAlignment="Top"
+                      ResizeDirection="Rows"
+                      ShowsPreview="False"
+                      Grid.Row="1">
+            </GridSplitter>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"                   
+                    xmlns:search="clr-namespace:SSMSPlusCore.Ui.Search">
+
+    <Style TargetType="DataGrid" x:Key="FastReadOnly">
+        <Setter Property="IsSynchronizedWithCurrentItem" Value="True" />
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="EnableRowVirtualization" Value="True" />
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel" />
+        <Setter Property="CanUserReorderColumns" Value="False" />
+        <Setter Property="SelectionMode" Value="Single" />
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,130 @@
+﻿<UserControl  x:Class="SSMSPlusSearch.UI.SchemaSearchControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:conv="clr-namespace:SSMSPlusCore.Ui.Converters;assembly=SSMSPlusCore"
+             xmlns:ext="clr-namespace:SSMSPlusCore.Ui.Extensions;assembly=SSMSPlusCore"
+             xmlns:combo="clr-namespace:SSMSPlusCore.Ui.Controls.ComboCheckBox;assembly=SSMSPlusCore"
+             xmlns:drop="clr-namespace:SSMSPlusCore.Ui.Controls.DropMenu;assembly=SSMSPlusCore"
+             xmlns:loading="clr-namespace:SSMSPlusCore.Ui.Controls.LoadingIndicator;assembly=SSMSPlusCore"
+             Background="{DynamicResource {x:Static SystemColors.MenuBarBrushKey}}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="1000">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="VisibleIfTrueConverter" />
+            <conv:HighlightToTextBlockConverter x:Key="HighlightToTextBlock" />
+            <ext:FlowDocumentScrollViewerDocumentHighlightBehavior x:Key="HighlightToFlowDocument" />
+            <ContextMenu  x:Key="RowMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                <MenuItem Header="Locate in Object Explorer" CommandParameter="{Binding}"
+                  Command="{Binding DataContext.LocateItemCmd, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" />
+            </ContextMenu>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/SSMSPlusCore;component/Ui/Design/DataGrid.xaml"/>
+
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+
+    </UserControl.Resources>
+
+
+
+    <Grid Margin="12" ext:GridExtensions.Structure="auto,auto,auto,*|*">
+        <Grid Grid.Row="0" Background="Transparent" Margin="0,0,0,12" ext:GridExtensions.Structure="auto,auto|auto,auto,*">
+            <Label FontSize="26" VerticalAlignment="Center">SSMS Plus</Label>
+            <TextBlock  Grid.Column="1" FontSize="12" VerticalAlignment="Center">Schema <LineBreak/> Search</TextBlock>
+            <Separator Grid.Row="1" Grid.ColumnSpan="10"></Separator>
+            <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Menu>
+                    <MenuItem Padding="4" >
+                        <MenuItem.Header>
+                            <drop:DropMenuHeader ItemName="{Binding DbDisplayName}"/>
+                        </MenuItem.Header>
+                        <MenuItem Header="Reindex" Command="{Binding ReIndexDbCmd}"/>
+                    </MenuItem>
+                </Menu>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" ext:GridExtensions.Structure="auto,auto|100,2*,100,1*,100,2*" >
+            <Label Grid.Row="0">Filter :</Label>
+            <TextBox Name="Filter" Grid.Row="0" Grid.Column="1" Margin="0,0,0,10" Width="auto" Padding="4"  Text="{Binding Path=Filter,UpdateSourceTrigger=PropertyChanged,Delay=0}" IsEnabled="{Binding ControlsEnabled}"/>
+            <Label Grid.Row="0"  Grid.Column="2">Match on :</Label>
+            <combo:ComboCheckBox Grid.Row="0"  Grid.Column="3" Margin="0,0,0,10" Height="30" ViewModel="{Binding ComboMatchVM}" IsEnabled="{Binding ControlsEnabled}" />
+
+            <Label Grid.Row="0"  Grid.Column="4">Object Types :</Label>
+            <combo:ComboCheckBox Grid.Row="0"  Grid.Column="5" Margin="0,0,0,10" Height="30" ViewModel="{Binding ComboObjectsVM}"  IsEnabled="{Binding ControlsEnabled}" />
+
+            <Label Grid.Row="1"  Grid.Column="0">Schema:</Label>
+            <combo:ComboCheckBox Grid.Row="1"  Grid.Column="1" Margin="0,0,0,10" Height="30" ViewModel="{Binding SchemaObjectsVM}" IsEnabled="{Binding ControlsEnabled}"/>
+
+            <Grid.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding Path=ExecuteSearchCmd}"/>
+            </Grid.InputBindings>
+        </Grid>
+
+        <Label Grid.Row="2" Margin="0,0,0,10" Content="{Binding Path=Message}"></Label>
+
+        <loading:LoadingIndicator Grid.Row="2" Title="Indexing "
+                                       HorizontalAlignment="Left" Margin="0,0,0,10" Visibility="{Binding Path=IsIndexing, Converter={StaticResource VisibleIfTrueConverter}}"/>
+
+        <Grid Name="objectsGrid" Grid.Row="3" ext:GridExtensions.Structure="1*,1*|*">
+            <DataGrid  Grid.Row="0" MinHeight="100" Style="{StaticResource FastReadOnly}"                      
+                       ItemsSource="{Binding SearchResultsVM}"
+                       SelectedIndex="0"
+                       SelectedValue="{Binding SelectedItem}"
+                       IsEnabled="{Binding Path=ControlsEnabled}">
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="ext:GridExtensions.DoubleClickCommand" Value="{Binding ElementName=objectsGrid, Path=DataContext.LocateItemCmd}"/>
+                        <Setter Property="ContextMenu" Value="{StaticResource RowMenu}" />
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.Resources>
+                    <ResourceDictionary>
+                        <ResourceDictionary.MergedDictionaries>
+                            <ResourceDictionary Source="pack://application:,,,/SSMSPlusCore;component/Ui/Design/DataGridRunFragment.xaml"/>
+                        </ResourceDictionary.MergedDictionaries>
+                    </ResourceDictionary>
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="300" Header="Name" SortMemberPath="SearchResult.Name" ClipboardContentBinding="{Binding SearchResult.Name}" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding NameHighlight, Converter={StaticResource HighlightToTextBlock}}"></ContentControl>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Width="100" Header="SchemaName" Binding="{Binding SearchResult.SchemaName}"  />
+                    <DataGridTextColumn Width="120" Header="Type" Binding="{Binding SearchResult.DisplayType}" />
+                    <DataGridTextColumn Width="150" Header="ModificationDate" Binding="{Binding SearchResult.ModificationDateStr}" />
+                    <DataGridTemplateColumn Width="*" Header="Definition" SortMemberPath="SearchResult.RichSmallDefinition.AsString" ClipboardContentBinding="{Binding SearchResult.RichSmallDefinition}" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate >
+                                <ContentControl Content="{Binding DefinitionHighlight, Mode=OneWay, Converter={StaticResource HighlightToTextBlock}}"></ContentControl>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <FlowDocumentScrollViewer   Grid.Row="1" Margin="0,10,0,0" BorderBrush="Black" BorderThickness="1" 
+                                        ext:FlowDocumentScrollViewerDocumentHighlightBehavior.HighlightContext="{Binding SelectedItem.FullPreviewHighlight}"                                      
+                                        >
+                <FlowDocumentScrollViewer.Resources>
+                    <ResourceDictionary Source="pack://application:,,,/SSMSPlusCore;component/Ui/Design/SqlFlowDocument.xaml"/>
+                </FlowDocumentScrollViewer.Resources>
+            </FlowDocumentScrollViewer>
+
+            <GridSplitter Height="10" HorizontalAlignment="Stretch" Margin="0"
+                      VerticalAlignment="Top"
+                      ResizeDirection="Rows"
+                      ShowsPreview="False"
+                      Grid.Row="1">
+            </GridSplitter>
+        </Grid>
+    </Grid>
+
+</UserControl>

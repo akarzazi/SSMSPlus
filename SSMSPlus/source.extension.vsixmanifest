@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+    <Metadata>
+        <Identity Id="SSMSPlus.4018b534-92e2-4cc5-abf6-f526817da0d9" Version="1.0" Language="en-US" Publisher="Adel KARZAZI" />
+        <DisplayName>SSMSPlus</DisplayName>
+        <Description xml:space="preserve">SSMS usefull stuff</Description>
+    </Metadata>
+    <Installation>
+        <InstallationTarget Id="ssms" Version="[15.0,16.0)" />
+    </Installation>
+    <Dependencies>
+        <Dependency d:Source="Manual" Version="[4.5,)" DisplayName="Microsoft .NET Framework" Id="Microsoft.Framework.NDP" />
+        <Dependency Id="Microsoft.VisualStudio.MPF.15.0" DisplayName="Visual Studio MPF 15.0" d:Source="Installed" Version="[15.0]" />
+    </Dependencies>
+    <Prerequisites>
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,16.0)" DisplayName="Visual Studio core editor" />
+    </Prerequisites>
+    <Assets>
+    </Assets>
+</PackageManifest>

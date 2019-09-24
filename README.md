@@ -1,2 +1,2 @@
 # SSMSPlus
-SQL management studio (SSMS) Extension
+SQL Server Management Studio (SSMS) Extension

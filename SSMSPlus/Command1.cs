@@ -19,6 +19,7 @@ using SSMSPlusSearch;
 using System;
 using System.ComponentModel.Design;
 using System.IO;
+using System.Reflection;
 using System.Windows;
 using Task = System.Threading.Tasks.Task;
 
@@ -29,11 +30,6 @@ namespace SSMSPlus
     /// </summary>
     internal sealed class Command1
     {
-        /// <summary>
-        /// VS Package that provides this command, not null.
-        /// </summary>
-       // private readonly AsyncPackage package;
-
         private static DTE2 _dte;
         private static AsyncPackage _asyncPackage;
         private static OleMenuCommandService _commandService;
@@ -53,7 +49,7 @@ namespace SSMSPlus
             try
             {
                 _configuration = new ConfigurationBuilder()
-                                .SetBasePath(Directory.GetCurrentDirectory())
+                                .SetBasePath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
                                 .AddXmlFile(@"_settings.config", optional: false)
                                 .Build();
 
@@ -72,8 +68,9 @@ namespace SSMSPlus
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.GetFullStackTraceWithMessage(), "Could not Load SSMSPlus");
                 _serviceProvider.GetRequiredService<ILogger<Command1>>().LogCritical(ex, "Critical Error when starting pluging");
-                MessageBox.Show(ex.GetFullStackTraceWithMessage(), "Could not Load SSmsPlus");
+
                 throw;
             }
         }
@@ -86,7 +83,7 @@ namespace SSMSPlus
                 builder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
                 builder.AddFileLogger(() => new FileLoggerOptions
                 {
-                    Folder = new SSMSWorkingDirProvider().GetWorkingDir() + "/log",
+                    Folder = Path.Combine(new SSMSWorkingDirProvider().GetWorkingDir(), "log"),
                     LogLevel = LogLevel.Information,
                     RetainPolicyFileCount = 30
                 });
@@ -121,17 +118,6 @@ namespace SSMSPlus
             get;
             private set;
         }
-
-        /// <summary>
-        /// Gets the service provider from the owner package.
-        /// </summary>
-        //private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider
-        //{
-        //    get
-        //    {
-        //        return this.package;
-        //    }
-        //}
 
         /// <summary>
         /// Initializes the singleton instance of the command.

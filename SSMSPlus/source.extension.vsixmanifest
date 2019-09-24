@@ -3,7 +3,7 @@
     <Metadata>
         <Identity Id="SSMSPlus.4018b534-92e2-4cc5-abf6-f526817da0d9" Version="1.0" Language="en-US" Publisher="Adel KARZAZI" />
         <DisplayName>SSMSPlus</DisplayName>
-        <Description xml:space="preserve">SSMS usefull stuff</Description>
+        <Description xml:space="preserve">Useful extensions for SSMS</Description>
     </Metadata>
     <Installation>
         <InstallationTarget Id="ssms" Version="[15.0,16.0)" />

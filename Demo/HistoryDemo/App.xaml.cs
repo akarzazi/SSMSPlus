@@ -50,7 +50,7 @@ namespace Demo
                 builder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
                 builder.AddFileLogger(() => new FileLoggerOptions
                 {
-                    Folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/log",
+                    Folder = Path.GetDirectoryName(Path.Combine(Assembly.GetExecutingAssembly().Location, "log")),
                     LogLevel = LogLevel.Information,
                     RetainPolicyFileCount = 30
                 });

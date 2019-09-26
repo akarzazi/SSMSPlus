@@ -15,13 +15,14 @@ Read more about Features
 SQL Server Management Studio 18
 
 ## Download
-Get the latest build archive from here:
-SSMS Plus Builds
+Get the latest build archive from the releases page :
+
+[releases](https://github.com/akarzazi/SSMSPlus/releases)
 
 ## Install
-Extract the Archive content to the SSMS install location :
+Extract the archive content to the SSMS install location :
 
-C:\Program Files (x86)\Microsoft SQL Server Management Studio 18\Common7\IDE\Extensions
+C:\Program Files (x86)\Microsoft SQL Server Management Studio 18\Extensions
 
 It should look like the following.
 ![Alt text](docs/illustrations/install-folder-screen.png?raw=true "Title")

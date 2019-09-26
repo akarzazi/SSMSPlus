@@ -9,15 +9,13 @@ It bring the following features:
     Schema Object Search
     Document Export for binary columns
 
-Read more about Features
+Read more about [Features](#Features)
 
 ## Prerequisites
 SQL Server Management Studio 18
 
 ## Download
-Get the latest build archive from the releases page :
-
-[releases](https://github.com/akarzazi/SSMSPlus/releases)
+Grap the latest build archive from the [Releases](https://github.com/akarzazi/SSMSPlus/releases) page.
 
 ## Install
 Extract the archive content to the SSMS install location :
@@ -32,9 +30,28 @@ A new top menu "SSMS Plus" will be displayed.
 
 ![Alt text](docs/illustrations/menu-screen.png?raw=true "Title")
 
-Enjoy !
+## <a id="Features"></a>Features ##
 
+### Query History
 
+Every time you execute a query through the editor, SSMS Plus will save that query.
 
+You can find your query history from the main menu :
+
+![Alt text](docs/illustrations/history-screen.png?raw=true "Title")
+
+### Schema Object Search
+
+Use this tool to find quickly any user object in the database.
+
+![Alt text](docs/illustrations/schema-search-screen.png?raw=true "Title")
+
+### Documents Export
+
+This tool is handy when you want to preview or export files from the database.
+
+The query is expecting two columns corresponding respectively to file name and file content.
+
+![Alt text](docs/illustrations/document-export-screen.png?raw=true "Title")
 
 

@@ -1,6 +1,4 @@
 # SSMSPlus
-SQL Server Management Studio (SSMS) Extension
-
 SSMS Plus is a productivity extension for SQL Server Management Studio 18.
 
 It bring the following features:

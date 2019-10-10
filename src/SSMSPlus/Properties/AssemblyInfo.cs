@@ -30,7 +30,7 @@ using Microsoft.VisualStudio.Shell;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.0.2.1")]
+[assembly: AssemblyVersion("0.0.2.2")]
 [assembly: AssemblyFileVersion("0.0.0.1")]
 //[assembly: ProvideBindingRedirection(AssemblyName = "Microsoft.Extensions.Configuration.Abstractions", PublicKeyToken = "adb9793829ddae60",
 //    NewVersion = "2.2.0.0", OldVersionLowerBound = "0.0.0.0",

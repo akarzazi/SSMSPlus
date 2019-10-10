@@ -2,6 +2,7 @@
 {
     using Microsoft.Win32;
     using SSMSPlusCore.Integration.Connection;
+    using SSMSPlusCore.Messaging;
     using SSMSPlusCore.Ui;
     using SSMSPlusCore.Ui.Text;
     using SSMSPlusCore.Utils;
@@ -44,8 +45,8 @@
         {
             this.CancelToken = new CancellationTokenSource();
             IsExporting = true;
-            ConsoleOutput.Send("Starting Export");
-            var exportedProgress = new Progress<string>(OnExportProgress);
+            ConsoleOutput.SendStandard("Starting Export");
+            var exportedProgress = new Progress<ReportMessage>(OnExportProgress);
             try
             {
                 await FileExporter.ExportFiles(_dbConnectionString, SqlQuery, FolderPath, this.CancelToken.Token, exportedProgress);
@@ -54,7 +55,7 @@
             catch (OperationCanceledException)
             {
                 Message = "Cancelled";
-                ConsoleOutput.Send("Export cancelled");
+                ConsoleOutput.SendStandard("Export cancelled");
             }
             finally
             {
@@ -62,9 +63,20 @@
             }
         }
 
-        private void OnExportProgress(string obj)
+        private void OnExportProgress(ReportMessage obj)
         {
-            ConsoleOutput.Send("Exported " + obj);
+            switch (obj.Level)
+            {
+                case ReportMessageLevel.Warning:
+                    ConsoleOutput.SendWarning(obj.Message);
+                    break;
+                case ReportMessageLevel.Error:
+                    ConsoleOutput.SendError(obj.Message);
+                    break;
+                default:
+                    ConsoleOutput.SendStandard(obj.Message);
+                    break;
+            }
         }
 
         private void OnCancelExportFiles()

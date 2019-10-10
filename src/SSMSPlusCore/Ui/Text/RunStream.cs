@@ -18,19 +18,24 @@ namespace SSMSPlusCore.Ui.Text
             OnMessage(this, run);
         }
 
+        public void SendStandard(string text, bool newLine = true)
+        {
+            SendColored(text, Brushes.Black, newLine);
+        }
+
         public void SendError(string text, bool newLine = true)
         {
             SendColored(text, Brushes.Red, newLine);
         }
 
-        public void Send(string text, bool newLine = true)
-        {
-            SendColored(text, Brushes.Black, newLine);
-        }
-
         public void SendSuccess(string text, bool newLine = true)
         {
             SendColored(text, Brushes.ForestGreen, newLine);
+        }
+
+        public void SendWarning(string text, bool newLine = true)
+        {
+            SendColored(text, Brushes.DarkOrange, newLine);
         }
 
         public void SendColored(string text, Brush foreground, bool newLine = true)

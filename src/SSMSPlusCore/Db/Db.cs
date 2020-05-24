@@ -38,7 +38,7 @@ namespace SSMSPlusCore.Database
                         transaction.Commit();
                         return result;
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         transaction.Rollback();
                         throw;

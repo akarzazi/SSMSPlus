@@ -151,7 +151,7 @@
     <Compile Include="Services\Filtering\FilterResultService.cs" />
     <Compile Include="Services\Filtering\MatchOn.cs" />
     <Compile Include="Services\IDbIndexer.cs" />
-    <Compile Include="Services\SearchUi.cs" />
+    <Compile Include="SearchUi.cs" />
     <Compile Include="Services\Filtering\FilterContext.cs" />
     <Compile Include="UI\SchemaSearchControl.xaml.cs">
       <DependentUpon>SchemaSearchControl.xaml</DependentUpon>

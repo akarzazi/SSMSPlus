@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using EnvDTE;
-using EnvDTE80;
-using Microsoft.VisualStudio.CommandBars;
+
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+
 using SSMSPlusCore.Integration;
+
 using SSMSPlusHistory.UI;
 
-namespace SSMSPlusHistory.Services
+namespace SSMSPlusHistory
 {
     public class HistoryUi
     {
@@ -50,6 +45,7 @@ namespace SSMSPlusHistory.Services
 
             var toolWindow = _packageProvider.AsyncPackage.FindToolWindow(typeof(HistoryToolWindow), 0, true);
             _window = (IVsWindowFrame)toolWindow.Frame;
+            _window.SetProperty((int)__VSFPROPID.VSFPROPID_FrameMode, VSFRAMEMODE.VSFM_MdiChild);
             Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(_window.Show());
         }
     }

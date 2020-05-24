@@ -1,20 +1,19 @@
 ﻿namespace SSMSPlusDocument.UI
 {
+    using System;
+    using System.IO;
+    using System.Threading;
+    using System.Threading.Tasks;
+
     using Microsoft.Win32;
+
     using SSMSPlusCore.Integration.Connection;
     using SSMSPlusCore.Messaging;
     using SSMSPlusCore.Ui;
     using SSMSPlusCore.Ui.Text;
     using SSMSPlusCore.Utils;
+
     using SSMSPlusDocument.Services;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Threading;
-    using System.Threading.Tasks;
 
     public class ExportDocumentsControlVM : ViewModelBase
     {
@@ -106,7 +105,7 @@
             ConsoleOutput.SendError(ex.GetFullStackTraceWithMessage());
         }
 
-        private string _sqlQuery = "Select top 10 FileName, FileContent FROM exploitation.Files";
+        private string _sqlQuery = "Select top 10 FileName, FileContent FROM Files";
         public string SqlQuery
         {
             get => _sqlQuery;

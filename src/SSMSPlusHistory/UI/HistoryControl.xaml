@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:i="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:ext="clr-namespace:SSMSPlusCore.Ui.Extensions;assembly=SSMSPlusCore"
              xmlns:conv="clr-namespace:SSMSPlusCore.Ui.Converters;assembly=SSMSPlusCore"
               xmlns:core="clr-namespace:SSMSPlusCore.Ui.Extensions;assembly=SSMSPlusCore"
@@ -32,7 +32,7 @@
     
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding ViewLoadedCommand}" />
+            <i:InvokeCommandAction Command="{Binding ViewLoadedCommand}" x:Name="interactivityFix" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid Margin="12" ext:GridExtensions.Structure="auto,auto,auto,*|*">

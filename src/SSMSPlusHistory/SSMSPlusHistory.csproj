@@ -194,7 +194,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\QueryItemRepository.cs" />
     <Compile Include="Services\Filtering\FilterContext.cs" />
-    <Compile Include="Services\HistoryUi.cs" />
+    <Compile Include="HistoryUi.cs" />
     <Compile Include="Services\QueryTracker.cs" />
     <Compile Include="UI\HistoryToolWindow.cs" />
     <Compile Include="UI\HistoryControl.xaml.cs">

@@ -3,83 +3,21 @@
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Reflection;
-    using System.Windows.Controls;
-    using System.Windows.Forms;
+
     using EnvDTE;
-    using EnvDTE80;
+
     using Microsoft.Extensions.Logging;
     using Microsoft.SqlServer.Management.Smo.RegSvrEnum;
     using Microsoft.SqlServer.Management.UI.VSIntegration;
-    using Microsoft.SqlServer.Management.UI.VSIntegration.ObjectExplorer;
     using Microsoft.VisualStudio.Shell;
+
     using SSMSPlusCore.Integration;
+
     using SSMSPlusHistory.Entities;
     using SSMSPlusHistory.Repositories;
+
     using Task = System.Threading.Tasks.Task;
 
-    public class tableMenuItem : ToolsMenuItemBase, IWinformsMenuHandler
-    {
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public tableMenuItem()
-        {
-            this.Text = "Script Data as INSERT";
-        }
-
-        /// <summary>
-        /// Invoke
-        /// </summary>
-        protected override void Invoke()
-        {
-
-        }
-
-        /// <summary>
-        /// Clone
-        /// </summary>
-        /// <returns></returns>
-        public override object Clone()
-        {
-            return new tableMenuItem();
-        }
-
-
-        /// <summary>
-        /// Get Menu Items
-        /// </summary>
-        /// <returns></returns>
-        public System.Windows.Forms.ToolStripItem[] GetMenuItems()
-        {
-            ToolStripMenuItem item = new ToolStripMenuItem("Script Data as");
-            ToolStripMenuItem insertItem = new ToolStripMenuItem("INSERT");
-            insertItem.Tag = false;
-            insertItem.Click += new EventHandler(InsertItem_Click);
-
-            item.DropDownItems.Add(insertItem);
-
-
-            ToolStripMenuItem scriptIt = new ToolStripMenuItem("Script Full table Schema");
-            scriptIt.Click += new EventHandler(scriptIt_Click);
-
-            return new ToolStripItem[] { item, scriptIt };
-        }
-
-        void scriptIt_Click(object sender, EventArgs e)
-        {
-
-
-        }
-
-
-        void InsertItem_Click(object sender, EventArgs e)
-        {
-
-
-        }
-
-    }
     public class QueryTracker
     {
         private ILogger<QueryTracker> _logger;
@@ -97,7 +35,6 @@
             _queryItemRepository = queryItemRepository;
             _packageProvider = packageProvider;
         }
-
 
         public void StartTraking()
         {
@@ -118,29 +55,6 @@
         private void CommandEvents_BeforeExecute(string Guid, int ID, object CustomIn, object CustomOut, ref bool CancelDefault)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-
-            //Microsoft.SqlServer.Management.SqlStudio.
-            //var objectExplorerService = (ObjectExplorerService)_package.GetServiceAsync(typeof(IObjectExplorerService)).Result;
-
-            //// var oesTreeProperty = objectExplorerService.GetType().GetProperty("Tree", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.IgnoreCase);
-            ////// if (oesTreeProperty != null)
-
-            ////     var x = (TreeView)oesTreeProperty.GetValue(objectExplorerService, null);
-
-            //int arraySize;
-            //INodeInformation[] array;
-            //objectExplorerService.GetSelectedNodes(out arraySize, out array);
-
-
-            //if (arraySize == 0)
-            //    return;
-
-            //var node = array[0];
-
-            //var table = (HierarchyObject)node.GetService(typeof(IMenuHandler));
-            //table.AddChild("abc", new tableMenuItem());
-
-            //Microsoft.SqlServer.Management.UI.VSIntegration.ObjectExplorer.FilterOperator
 
             try
             {

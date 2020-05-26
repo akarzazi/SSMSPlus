@@ -97,6 +97,7 @@ You can contribute in the following ways :
 
 ### Non Goals
 * Implement domain specific features. (ex: integrate with FTP, Azure Services)
+* Implement heavy or obstrusive features like intellisence.
 * Seek for compatibility with an old edtion of SQL Server or SSMS.
 
 
@@ -129,4 +130,4 @@ It is handy for faster UI prototyping, since it does not require to launch SSMS.
 
 A log record in the folder corresponding to `Environment.SpecialFolder.LocalApplicationData + "\SSMS Plus"` which corresponds generally to `C:\Users\<USER>\AppData\Local\SSMS Plus`.
 
-Theses logs are very usefull for diagnostics.
+Theses logs are very useful for diagnostics.

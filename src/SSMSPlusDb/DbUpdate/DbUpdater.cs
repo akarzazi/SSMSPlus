@@ -1,18 +1,19 @@
-﻿using SSMSPlusCore.Database;
-using System;
-using Dapper;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SSMSPlusCore.App;
-using System.Reflection;
-using System.IO;
-using Microsoft.Extensions.Logging;
 using System.Data.Common;
-using SSMSPlus.DbUpdate.Entities;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 
-namespace SSMSPlus.DbUpdate
+using Dapper;
+
+using Microsoft.Extensions.Logging;
+
+using SSMSPlusCore.App;
+using SSMSPlusCore.Database;
+using SSMSPlusDb.DbUpdate.Entities;
+
+namespace SSMSPlusDb.DbUpdate
 {
     public class DbUpdater
     {
@@ -50,7 +51,7 @@ namespace SSMSPlus.DbUpdate
 
             _logger.LogInformation("Build version is out of date, current {@currentBuild}, target {@targetBuild}", currentBuild, targetBuild);
 
-            var resourcesPrefix = "SSMSPlus.DbUpdate.Versions.";
+            var resourcesPrefix = "SSMSPlusDb.DbUpdate.Versions.";
             string[] resNames = _resourcesAssembly.GetManifestResourceNames().Where(p => p.StartsWith(resourcesPrefix)).OrderBy(p => p).ToArray();
 
             do
@@ -70,18 +71,15 @@ namespace SSMSPlus.DbUpdate
             {
                 connection.Open();
 
-                using (var transaction = connection.BeginTransaction())
+                var sql = "SELECT count(*) FROM sqlite_master where type = 'table' and Name = 'SSMSPlus.BuildVersion'";
+                var result = connection.QuerySingle<int>(sql);
+                if (result == 0)
+                    return 0;
+                else
                 {
-                    var sql = "SELECT count(*) FROM sqlite_master where type = 'table' and Name = 'SSMSPlus.BuildVersion'";
-                    var result = connection.QuerySingle<int>(sql: sql, transaction: transaction);
-                    if (result == 0)
-                        return 0;
-                    else
-                    {
-                        var sqlBuildNumber = "SELECT BuildNumber FROM 'SSMSPlus.BuildVersion' ORDER BY BuildNumber DESC LIMIT 1 ";
-                        var buildNumber = connection.QuerySingleOrDefault<int>(sql: sqlBuildNumber, transaction: transaction);
-                        return buildNumber;
-                    }
+                    var sqlBuildNumber = "SELECT BuildNumber FROM 'SSMSPlus.BuildVersion' ORDER BY BuildNumber DESC LIMIT 1 ";
+                    var buildNumber = connection.QuerySingleOrDefault<int>(sqlBuildNumber);
+                    return buildNumber;
                 }
             }
         }

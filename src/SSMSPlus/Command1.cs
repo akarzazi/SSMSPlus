@@ -1,10 +1,18 @@
-﻿using EnvDTE80;
+﻿using System;
+using System.ComponentModel.Design;
+using System.IO;
+using System.Reflection;
+using System.Windows;
+
+using EnvDTE80;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.Shell;
-using SSMSPlus.DbUpdate;
+
 using SSMSPlus.Services;
+
 using SSMSPlusCore;
 using SSMSPlusCore.App;
 using SSMSPlusCore.Di;
@@ -12,15 +20,17 @@ using SSMSPlusCore.Infra.Logging;
 using SSMSPlusCore.Integration;
 using SSMSPlusCore.Settings;
 using SSMSPlusCore.Utils;
+using SSMSPlusDb;
+using SSMSPlusDb.DbUpdate;
+
 using SSMSPlusDocument;
+
 using SSMSPlusHistory;
+
 using SSMSPlusPreferences;
+
 using SSMSPlusSearch;
-using System;
-using System.ComponentModel.Design;
-using System.IO;
-using System.Reflection;
-using System.Windows;
+
 using Task = System.Threading.Tasks.Task;
 
 namespace SSMSPlus
@@ -60,7 +70,7 @@ namespace SSMSPlus
                 _serviceProvider = services.BuildServiceProvider();
                 ServiceLocator.SetLocatorProvider(_serviceProvider);
 
-                _serviceProvider.GetRequiredService<DbUpdate.DbUpdater>().UpdateDb();
+                _serviceProvider.GetRequiredService<DbUpdater>().UpdateDb();
                 _serviceProvider.GetRequiredService<HistoryPlugin>().Register();
                 _serviceProvider.GetRequiredService<SearchPlugin>().Register();
                 _serviceProvider.GetRequiredService<DocumentPlugin>().Register();
@@ -101,7 +111,7 @@ namespace SSMSPlus
 
             services.AddSingleton<IWorkingDirProvider, SSMSWorkingDirProvider>();
             services.AddSingleton<IVersionProvider, VersionProvider>();
-            services.AddSingleton<DbUpdater>();
+            services.AddSSMSPlusDbServices();
             services.AddSSMSPlusCoreServices();
             services.AddSSMSPlusHistoryServices();
             services.AddSSMSPlusSearchServices();

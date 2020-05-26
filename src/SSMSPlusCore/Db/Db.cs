@@ -1,22 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+
 using Dapper;
-using SSMSPlusCore.Dab.Dapper;
 
 namespace SSMSPlusCore.Database
 {
     public class Db
     {
-        static Db()
-        {
-            SQLitePCL.raw.SetProvider(new SQLitePCL.SQLite3Provider_e_sqlite3());
-            SqlMapper.AddTypeHandler(new NullableLongHandler());
-        }
-
         private readonly SqliteConnectionFactory _dbConnectionFactory;
 
         public Db(SqliteConnectionFactory dbConnectionFactory)

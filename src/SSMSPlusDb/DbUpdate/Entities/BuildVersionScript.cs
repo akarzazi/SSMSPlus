@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SSMSPlus.DbUpdate.Entities
+namespace SSMSPlusDb.DbUpdate.Entities
 {
     public class BuildVersionScript
     {

@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SSMSPlusCore.Di;
 using SSMSPlusCore.Infra.Logging;
+using SSMSPlusDb.DbUpdate;
 using System;
 using System.IO;
 using System.Reflection;
@@ -34,6 +35,8 @@ namespace Demo
 
                 _serviceProvider = services.BuildServiceProvider();
                 ServiceLocator.SetLocatorProvider(_serviceProvider);
+
+                _serviceProvider.GetRequiredService<DbUpdater>().UpdateDb();
             }
             catch (Exception ex)
             {
@@ -50,7 +53,7 @@ namespace Demo
                 builder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
                 builder.AddFileLogger(() => new FileLoggerOptions
                 {
-                    Folder = Path.GetDirectoryName(Path.Combine(Assembly.GetExecutingAssembly().Location, "log")),
+                    Folder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "log"),
                     LogLevel = LogLevel.Information,
                     RetainPolicyFileCount = 30
                 });

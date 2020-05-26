@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.421
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSMSPlus", "SSMSPlus\SSMSPlus.csproj", "{320EB57F-22AD-486A-9C29-144938B0BBC7}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSMSPlusDocument", "SSMSPlusDocument\SSMSPlusDocument.csproj", "{6258A92F-0E37-4AA7-802D-27FB1A535C63}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSMSPlusPreferences", "SSMSPlusPreferences\SSMSPlusPreferences.csproj", "{EB38BBD1-F621-4AE1-9B82-15D52DACF042}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSMSPlusDb", "SSMSPlusDb\SSMSPlusDb.csproj", "{FD9DA179-770E-46BB-8676-A757D4375F8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{EB38BBD1-F621-4AE1-9B82-15D52DACF042}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB38BBD1-F621-4AE1-9B82-15D52DACF042}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB38BBD1-F621-4AE1-9B82-15D52DACF042}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD9DA179-770E-46BB-8676-A757D4375F8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD9DA179-770E-46BB-8676-A757D4375F8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD9DA179-770E-46BB-8676-A757D4375F8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD9DA179-770E-46BB-8676-A757D4375F8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

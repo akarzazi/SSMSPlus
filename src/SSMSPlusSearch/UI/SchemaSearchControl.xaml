@@ -17,8 +17,12 @@
             <conv:HighlightToTextBlockConverter x:Key="HighlightToTextBlock" />
             <ext:FlowDocumentScrollViewerDocumentHighlightBehavior x:Key="HighlightToFlowDocument" />
             <ContextMenu  x:Key="RowMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
-                <MenuItem Header="Locate in Object Explorer" CommandParameter="{Binding}"
+                <MenuItem Header="Locate in Object Explorer" CommandParameter="{Binding}" 
                   Command="{Binding DataContext.LocateItemCmd, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" />
+                <MenuItem Header="Copy Name" CommandParameter="{Binding}" 
+                  Command="{Binding DataContext.CopyItemNameCmd, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" />
+                <MenuItem Header="Copy Definition" CommandParameter="{Binding}" 
+                  Command="{Binding DataContext.CopyItemDefinitionCmd, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" />
             </ContextMenu>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/SSMSPlusCore;component/Ui/Design/DataGrid.xaml"/>

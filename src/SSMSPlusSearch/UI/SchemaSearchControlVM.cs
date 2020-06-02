@@ -13,6 +13,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Windows;
 
     public class SchemaSearchControlVM : ViewModelBase
     {
@@ -28,6 +29,8 @@
         public IAsyncCommand ReIndexDbCmd { get; private set; }
         public IAsyncCommand ExecuteSearchCmd { get; private set; }
         public IAsyncCommand<SearchFilterResultVM> LocateItemCmd { get; private set; }
+        public Command<SearchFilterResultVM> CopyItemNameCmd { get; private set; }
+        public Command<SearchFilterResultVM> CopyItemDefinitionCmd { get; private set; }
 
         public ComboCheckBoxViewModel<MatchOn> ComboMatchVM { get; private set; }
         public ComboCheckBoxViewModel<DbSimplifiedType> ComboObjectsVM { get; private set; }
@@ -41,11 +44,15 @@
             ReIndexDbCmd = new AsyncCommand(OnReIndexDbAsync, CanExecuteSubmit, HandleError);
             ExecuteSearchCmd = new AsyncCommand(FuncHelper.DebounceAsync(ExecuteSearchAsync, 100), CanExecuteSubmit, HandleError);
             LocateItemCmd = new AsyncCommand<SearchFilterResultVM>(LocateAsync, (_) => true, HandleError);
+            CopyItemNameCmd = new Command<SearchFilterResultVM>(OnCopyItemName, null, HandleError);
+            CopyItemDefinitionCmd = new Command<SearchFilterResultVM>(OnCopyItemDefinition, null, HandleError);
 
             CreateMatchOnCombo();
             CreateObjectsCombo();
             SchemaObjectsVM = new ComboCheckBoxViewModel<string>();
         }
+
+        #region Context Menu
 
         private async Task LocateAsync(SearchFilterResultVM item)
         {
@@ -58,6 +65,18 @@
 
             await _objectExploreInteraction.SelectNodeAsync(_dbConnectionString.Server, _dbConnectionString.Database, itemPath);
         }
+
+        private void OnCopyItemName(SearchFilterResultVM item)
+        {
+            Clipboard.SetText(item.SearchResult.Name);
+        }
+
+        private void OnCopyItemDefinition(SearchFilterResultVM item)
+        {
+            Clipboard.SetText(item.SearchResult.RichFullDefinition.AsString);
+        }
+
+        #endregion
 
         private void CreateObjectsCombo()
         {
@@ -157,7 +176,7 @@
             {
                 IsLoading = false;
             }
-        }
+        }       
 
         private bool CanExecuteSubmit()
         {

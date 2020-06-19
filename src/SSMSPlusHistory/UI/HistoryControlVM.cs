@@ -82,7 +82,7 @@
         private void InitDefaults()
         {
             _endDate = DateTime.Now.AddDays(1).Date;
-            _startDate = EndDate.AddDays(-15).Date;
+            _startDate = EndDate.AddDays(-60).Date;
         }
 
         private List<SearchFilterResultVM> _queryItemsVM;

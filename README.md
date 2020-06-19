@@ -45,6 +45,7 @@ C:\Program Files (x86)\Microsoft SQL Server Management Studio 18\Extensions
 It should look like the following.
 ![SSMS Plus Extension dlls](docs/illustrations/install-folder-screen.png?raw=true "SSMS Plus Extension dlls")
 
+**Note:** you might need to extract the SFX as admin, if you don't have write access to the ssms extensions folder
 ## Launch
 A new top menu "SSMS Plus" will be available.
 

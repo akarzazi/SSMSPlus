@@ -46,7 +46,7 @@
                 frags.AddSecondary(DbColumn.Parent.Name);
                 frags.AddSecondary(" | ");
                 frags.AddPrimary(DbColumn.Name);
-                frags.AddPrimary(" " + Formatting.FormatDatatype(DbColumn.Datatype, DbColumn.Precision));
+                frags.AddPrimary(" " + Formatting.FormatDatatype(DbColumn.Datatype, DbColumn.Precision, DbColumn.Scale));
                 if (!string.IsNullOrEmpty(DbColumn.Definition))
                 {
                     frags.AddSecondary(" | ");

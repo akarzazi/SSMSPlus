@@ -18,6 +18,8 @@ namespace SSMSPlusSearch.Entities
 
         public string Precision { get; set; }
 
+        public string Scale { get; set; }
+
         public string Definition { get; set; }
 
         public DbObject Parent { get; set; }

@@ -69,7 +69,7 @@ namespace SSMSPlusSearch.Entities
             foreach (var dbColumn in DbColumns)
             {
                 var col = TextFragment.Primary(dbColumn.Name);
-                var type = TextFragment.Secondary(Formatting.FormatDatatype(dbColumn.Datatype, dbColumn.Precision));
+                var type = TextFragment.Secondary(Formatting.FormatDatatype(dbColumn.Datatype, dbColumn.Precision, dbColumn.Scale));
                 var def = TextFragment.Secondary(dbColumn.Definition?.RemoveLineReturns());
                 list.Add((col, type, def));
             }

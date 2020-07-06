@@ -38,7 +38,7 @@ namespace SSMSPlusDb.DbUpdate
 
             if (targetBuild < currentBuild)
             {
-                var exeption = new Exception($"Target Build version is lower than current, current {@currentBuild}, target {@targetBuild}");
+                var exeption = new Exception($"Target Build version is lower than current, current {currentBuild}, target {targetBuild}");
                 _logger.LogError(exeption, "Cannot Update DB");
                 throw exeption;
             }

@@ -1,12 +1,13 @@
 ﻿-- Clear all indices
-DELETE FROM 'SchemaSearch.DbIndicesColumns'
-DELETE FROM 'SchemaSearch.DbIndices'
-DELETE FROM 'SchemaSearch.DbColumns'
-DELETE FROM 'SchemaSearch.DbObjects'
-DELETE FROM 'SchemaSearch.Dbs'
+DELETE FROM 'SchemaSearch.DbIndicesColumns';
+DELETE FROM 'SchemaSearch.DbIndices';
+DELETE FROM 'SchemaSearch.DbColumns';
+DELETE FROM 'SchemaSearch.DbObjects';
+DELETE FROM 'SchemaSearch.Dbs';
 
 -- Add scale as INTEGER & switch precision to INTEGER
-DROP TABLE IF EXISTS 'SchemaSearch.DbColumns' 
+DROP TABLE IF EXISTS 'SchemaSearch.DbColumns';
+
 CREATE TABLE 'SchemaSearch.DbColumns' 
 (
 	DbId INTEGER NOT NULL,

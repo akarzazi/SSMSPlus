@@ -58,8 +58,8 @@ DELETE  FROM 'SchemaSearch.Dbs' WHERE dbid = @dbid;";
                                                         Values (@DbId,  @ObjectId,  @Type,  @SchemaName,    @Name,  @Definition,    @ModificationDate,  @ParentObjectId);";
                  await conn.ExecuteAsync(sql, dbObjects, trn, timeout);
 
-                 sql = @"INSERT INTO 'SchemaSearch.DbColumns'   (DbId,   TableId,    Name,   Datatype,   Precision,  Definition) 
-                                                        Values (@DbId,  @TableId,   @Name,  @Datatype,  @Precision, @Definition);";
+                 sql = @"INSERT INTO 'SchemaSearch.DbColumns'   (DbId,   TableId,    Name,   Datatype,   Precision,  Scale, Definition) 
+                                                        Values (@DbId,  @TableId,   @Name,  @Datatype,  @Precision, @Scale, @Definition);";
                  await conn.ExecuteAsync(sql, columns, trn, timeout);
 
                  sql = @"INSERT INTO 'SchemaSearch.DbIndices'   (DbId,   OwnerId,   IndexNumber,  Name,   Type,   FilterDefinition,  IsUnique) 

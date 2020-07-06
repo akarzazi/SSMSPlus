@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SSMSPlusSearch.Helpers
+﻿namespace SSMSPlusSearch.Helpers
 {
     public static class Formatting
     {
-        public static string FormatDatatype(string datatype, string precision)
+        public static string FormatDatatype(string datatype, int? precision, int? scale)
         {
-            if (precision == "-1")
-            {
-                datatype += "(max)";
-            }
-            else
-            {
-                datatype += "(" + precision + ")";
-            }
-            return datatype;
+            if (precision == null || precision == 0)
+                return datatype;
+
+            if (precision == -1)
+                return $"{datatype}(max)";
+
+            if (scale == null || scale == 0)
+                return $"{datatype}({ precision })";
+
+            return $"{datatype}({ precision },{scale})";
         }
     }
 }

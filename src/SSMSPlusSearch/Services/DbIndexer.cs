@@ -83,7 +83,7 @@ LEFT JOIN sys.objects AS Parent ON Parent.object_id = o.parent_object_id
 WHERE o.is_ms_shipped = 0";
 
                 string columnsQuery = @"
-SELECT c.id as 'TableId', c.name,  t.name AS 'datatype', c.prec AS 'precision', cc.definition
+SELECT c.id as 'TableId', c.name,  t.name AS 'datatype', c.prec AS 'precision', c.scale AS 'scale', cc.definition
 FROM sys.syscolumns AS c
 INNER JOIN sys.objects AS o ON c.id = o.object_id
 INNER JOIN sys.types AS t ON c.xusertype = t.user_type_id

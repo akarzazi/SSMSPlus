@@ -2,7 +2,7 @@
 {
     public static class Formatting
     {
-        public static string FormatDatatype(string datatype, int? precision, int? scale)
+        public static string FormatDatatype(string datatype, long? precision, long? scale)
         {
             if (precision == null || precision == 0)
                 return datatype;

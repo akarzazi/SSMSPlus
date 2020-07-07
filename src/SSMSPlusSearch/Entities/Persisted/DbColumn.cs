@@ -16,9 +16,9 @@ namespace SSMSPlusSearch.Entities
 
         public string Datatype { get; set; }
 
-        public int? Precision { get; set; }
+        public long? Precision { get; set; }
 
-        public int? Scale { get; set; }
+        public long? Scale { get; set; }
 
         public string Definition { get; set; }
 

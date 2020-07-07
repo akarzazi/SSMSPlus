@@ -10,7 +10,7 @@
             if (precision == -1)
                 return $"{datatype}(max)";
 
-            if (scale == null || scale == 0)
+            if (scale == null)
                 return $"{datatype}({ precision })";
 
             return $"{datatype}({ precision },{scale})";

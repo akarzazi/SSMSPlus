@@ -40,7 +40,7 @@ Grap the latest build archive from the [Releases](https://github.com/akarzazi/SS
 ## Install
 Extract the archive content to the SSMS install location :
 
-C:\Program Files (x86)\Microsoft SQL Server Management Studio 18\Extensions
+`C:\Program Files (x86)\Microsoft SQL Server Management Studio 18\Common7\IDE\Extensions\SSMSPlus`
 
 It should look like the following.
 ![SSMS Plus Extension dlls](docs/illustrations/install-folder-screen.png?raw=true "SSMS Plus Extension dlls")

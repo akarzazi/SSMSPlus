@@ -97,7 +97,7 @@
             ComboMatchVM.SelectionChanged += ComboVM_SelectionChanged;
         }
 
-        private void CreateSchemaCombo(IEnumerable<string> schemas)
+        private void ReCreateSchemaCombo(IEnumerable<string> schemas)
         {
             SchemaObjectsVM.Items.Clear();
             
@@ -105,7 +105,8 @@
             {
                 SchemaObjectsVM.Items.Add(new ComboCheckBoxItem<string>() { Text = schema, IsChecked = true, Value = schema });
             }
-            
+
+            SchemaObjectsVM.SelectionChanged -= ComboVM_SelectionChanged;
             SchemaObjectsVM.SelectionChanged += ComboVM_SelectionChanged;
         }
 
@@ -155,7 +156,7 @@
         {
             _dbid = dbId;
             _allDdResults = (await _schemaSearchRepository.GetObjectsByDb(_dbid)).ToArray();
-            CreateSchemaCombo(_allDdResults.Select(p => p.SchemaName).Distinct().OrderBy(p => p));
+            ReCreateSchemaCombo(_allDdResults.Select(p => p.SchemaName).Distinct().OrderBy(p => p));
         }
 
         private async Task ExecuteSearchAsync()

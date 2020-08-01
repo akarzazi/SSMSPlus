@@ -99,10 +99,13 @@
 
         private void CreateSchemaCombo(IEnumerable<string> schemas)
         {
+            SchemaObjectsVM.Items.Clear();
+            
             foreach (var schema in schemas)
             {
                 SchemaObjectsVM.Items.Add(new ComboCheckBoxItem<string>() { Text = schema, IsChecked = true, Value = schema });
             }
+            
             SchemaObjectsVM.SelectionChanged += ComboVM_SelectionChanged;
         }
 

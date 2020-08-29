@@ -37,10 +37,10 @@
 
     <Grid Margin="12" ext:GridExtensions.Structure="auto,auto,auto,*|*">
         <Grid Grid.Row="0" Background="Transparent" Margin="0,0,0,12" ext:GridExtensions.Structure="auto,auto|auto,auto,*">
-            <Label FontSize="26" VerticalAlignment="Center">SSMS Plus</Label>
-            <TextBlock  Grid.Column="1" FontSize="12" VerticalAlignment="Center">Schema <LineBreak/> Search</TextBlock>
+            <Label FontSize="22" VerticalAlignment="Center" Padding="Infinity,0" Margin="0,0,5,0">SSMS Plus</Label>
+            <TextBlock  Grid.Column="1" FontSize="12" Padding="0" VerticalAlignment="Center">Schema <LineBreak/> Search</TextBlock>
             <Separator Grid.Row="1" Grid.ColumnSpan="10"></Separator>
-            <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <StackPanel Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Menu>
                     <MenuItem Padding="4" >
                         <MenuItem.Header>
@@ -52,17 +52,18 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="1" ext:GridExtensions.Structure="auto,auto|100,2*,100,1*,100,2*" >
-            <Label Grid.Row="0">Filter :</Label>
-            <TextBox Name="Filter" Grid.Row="0" Grid.Column="1" Margin="0,0,0,10" Width="auto" Padding="4"  Text="{Binding Path=Filter,UpdateSourceTrigger=PropertyChanged,Delay=0}" IsEnabled="{Binding ControlsEnabled}"/>
-            <Label Grid.Row="0"  Grid.Column="2">Match on :</Label>
-            <combo:ComboCheckBox Grid.Row="0"  Grid.Column="3" Margin="0,0,0,10" Height="30" ViewModel="{Binding ComboMatchVM}" IsEnabled="{Binding ControlsEnabled}" />
+        <Grid Grid.Row="1" ext:GridExtensions.Structure="auto,auto|25*,15*,30*,10*">
+            <Label Grid.Row="0" Grid.Column="0" FontWeight="DemiBold">Filter :</Label>
+            <TextBox Name="Filter" Grid.Row="0" Grid.Column="0" Margin="42,0,5,10" Width="auto" Padding="4"  Text="{Binding Path=Filter,UpdateSourceTrigger=PropertyChanged,Delay=0}" IsEnabled="{Binding ControlsEnabled}"/>
 
-            <Label Grid.Row="0"  Grid.Column="4">Object Types :</Label>
-            <combo:ComboCheckBox Grid.Row="0"  Grid.Column="5" Margin="0,0,0,10" Height="30" ViewModel="{Binding ComboObjectsVM}"  IsEnabled="{Binding ControlsEnabled}" />
+            <Label Grid.Row="0"  Grid.Column="1" FontWeight="DemiBold">Match on :</Label>
+            <combo:ComboCheckBox Grid.Row="0"  Grid.Column="1" Margin="67,0,5,10" Height="30" ViewModel="{Binding ComboMatchVM}" IsEnabled="{Binding ControlsEnabled}" />
 
-            <Label Grid.Row="1"  Grid.Column="0">Schema:</Label>
-            <combo:ComboCheckBox Grid.Row="1"  Grid.Column="1" Margin="0,0,0,10" Height="30" ViewModel="{Binding SchemaObjectsVM}" IsEnabled="{Binding ControlsEnabled}"/>
+            <Label Grid.Row="0"  Grid.Column="2" FontWeight="DemiBold">Object Types :</Label>
+            <combo:ComboCheckBox Grid.Row="0"  Grid.Column="2" Margin="85,0,5,10" Height="30" ViewModel="{Binding ComboObjectsVM}" IsEnabled="{Binding ControlsEnabled}" />
+
+            <Label Grid.Row="0"  Grid.Column="3" FontWeight="DemiBold">Schema :</Label>
+            <combo:ComboCheckBox Grid.Row="0"  Grid.Column="3" Margin="57,0,5,10" Height="30" ViewModel="{Binding SchemaObjectsVM}" IsEnabled="{Binding ControlsEnabled}"/>
 
             <Grid.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding Path=ExecuteSearchCmd}"/>
@@ -76,9 +77,12 @@
 
         <Grid Name="objectsGrid" Grid.Row="3" ext:GridExtensions.Structure="1*,1*|*">
             <DataGrid  Grid.Row="0" MinHeight="100" Style="{StaticResource FastReadOnly}"                      
-                       ItemsSource="{Binding SearchResultsVM}"
+                       ItemsSource="{Binding SearchResultsVM, NotifyOnTargetUpdated=True}"
                        SelectedIndex="0"
                        SelectedValue="{Binding SelectedItem}"
+                       TargetUpdated="objectsGrid_TargetUpdated"
+                       Loaded="objectsGrid_Loaded"
+                       Sorting="objectsGrid_Sorting"
                        IsEnabled="{Binding Path=ControlsEnabled}">
                 <DataGrid.RowStyle>
                     <Style TargetType="DataGridRow">
@@ -94,7 +98,7 @@
                     </ResourceDictionary>
                 </DataGrid.Resources>
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Width="300" Header="Name" SortMemberPath="SearchResult.Name" ClipboardContentBinding="{Binding SearchResult.Name}" >
+                    <DataGridTemplateColumn Width="300" Header="Name" SortMemberPath="SearchResult.Name" ClipboardContentBinding="{Binding SearchResult.Name}" SortDirection="Ascending" >
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ContentControl Content="{Binding NameHighlight, Converter={StaticResource HighlightToTextBlock}}"></ContentControl>
@@ -114,20 +118,33 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <FlowDocumentScrollViewer   Grid.Row="1" Margin="0,10,0,0" BorderBrush="Black" BorderThickness="1" 
-                                        ext:FlowDocumentScrollViewerDocumentHighlightBehavior.HighlightContext="{Binding SelectedItem.FullPreviewHighlight}"                                      
-                                        >
+            <GridSplitter Height="10" HorizontalAlignment="Stretch" Margin="0" BorderBrush="Black" BorderThickness="1,0,1,1" Background="AliceBlue"
+                      VerticalAlignment="Top"
+                      ResizeDirection="Rows"
+                      ShowsPreview="False"
+                      Grid.Row="1">
+
+                <GridSplitter.Template>
+                    <ControlTemplate TargetType="{x:Type GridSplitter}">
+                        <Grid Margin="0,0,0,0">
+                            <Border x:Name="FocusVisual" BorderBrush="Black" BorderThickness="1,0,1,1" Background="AliceBlue"/>
+                            <Button Content="" Width="33" HorizontalAlignment="Center" />
+                            <TextBlock HorizontalAlignment="Center" TextAlignment="Center" Margin="0,0,0,2" VerticalAlignment="Center" Text="•••" FontSize="14" Foreground="Black"/>
+                            <Rectangle Fill="Transparent"/>
+                        </Grid>
+                    </ControlTemplate>
+                </GridSplitter.Template>
+
+            </GridSplitter>
+
+            <FlowDocumentScrollViewer Name="fdsvDefination"  Grid.Row="1" Margin="0,10,0,0" BorderBrush="Black" BorderThickness="1,0,1,1" 
+                                        ext:FlowDocumentScrollViewerDocumentHighlightBehavior.HighlightContext="{Binding SelectedItem.FullPreviewHighlight}">
+
                 <FlowDocumentScrollViewer.Resources>
                     <ResourceDictionary Source="pack://application:,,,/SSMSPlusCore;component/Ui/Design/SqlFlowDocument.xaml"/>
                 </FlowDocumentScrollViewer.Resources>
             </FlowDocumentScrollViewer>
 
-            <GridSplitter Height="10" HorizontalAlignment="Stretch" Margin="0"
-                      VerticalAlignment="Top"
-                      ResizeDirection="Rows"
-                      ShowsPreview="False"
-                      Grid.Row="1">
-            </GridSplitter>
         </Grid>
     </Grid>
 

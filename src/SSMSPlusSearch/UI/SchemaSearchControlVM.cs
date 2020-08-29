@@ -11,6 +11,7 @@
     using SSMSPlusSearch.Services.Filtering;
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Windows;
@@ -167,16 +168,57 @@
                 await Task.Run(() =>
                  {
                      var filter = new FilterContext(Filter, ComboMatchVM.GetSelectedValues(), ComboObjectsVM.GetSelectedValues(), SchemaObjectsVM.GetSelectedValues());
-                     SearchResultsVM = FilterResultService.Filter(_allDdResults, filter).Select(p => new SearchFilterResultVM(p, filter)).ToList();
+                     var result = FilterResultService.Filter(_allDdResults, filter).Select(p => new SearchFilterResultVM(p, filter));
+
+                     //Sorting 
+                     Func<SearchFilterResultVM, dynamic> sortExpression = null;
+                     switch (CurrentSortColumn)
+                     {
+                         case ("Name"):
+                             sortExpression = (x => x.SearchResult.Name);
+                             break;
+
+                         case ("SchemaName"):
+                             sortExpression = (x => x.SearchResult.SchemaName);
+                             break;
+
+                         case ("DisplayType"):
+                             sortExpression = (x => x.SearchResult.DisplayType);
+                             break;
+
+                         case ("ModificationDateStr"):
+                             sortExpression = (x => x.SearchResult.ModificationDate);
+                             break;
+
+                         case ("RichSmallDefinition"):
+                             sortExpression = (x => x.SearchResult.RichSmallDefinition.AsString);
+                             break;
+
+                         default:
+                             sortExpression = (x => x.SearchResult.Name);
+                             break;
+                     }
+
+                     // sort direction
+                     if (CurrentSortDirection == ListSortDirection.Descending)
+                     {
+                         SearchResultsVM = result.OrderByDescending(sortExpression).ToList();
+                     }
+                     else
+                     {
+                         SearchResultsVM = result.OrderBy(sortExpression).ToList();
+                     }
+
                  }).ConfigureAwait(false);
 
+                stopw.Stop();
                 Message = $"{SearchResultsVM.Count} Result(s) in {stopw.ElapsedMilliseconds} ms";
             }
             finally
             {
                 IsLoading = false;
             }
-        }       
+        }
 
         private bool CanExecuteSubmit()
         {
@@ -242,6 +284,9 @@
             get => _selectedItem;
             set => SetField(ref _selectedItem, value);
         }
+
+        public string CurrentSortColumn { get; set; }
+        public ListSortDirection CurrentSortDirection { get; set; }
 
         private List<SearchFilterResultVM> _searchResultsVM;
         public List<SearchFilterResultVM> SearchResultsVM

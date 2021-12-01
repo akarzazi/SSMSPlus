@@ -5,12 +5,15 @@
     using SSMSPlusCore.Ui;
     using SSMSPlusCore.Ui.Controls.ComboCheckBox;
     using SSMSPlusCore.Utils;
+
     using SSMSPlusSearch.Entities;
     using SSMSPlusSearch.Repositories;
     using SSMSPlusSearch.Services;
     using SSMSPlusSearch.Services.Filtering;
+
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Windows;
@@ -100,7 +103,7 @@
         private void ReCreateSchemaCombo(IEnumerable<string> schemas)
         {
             SchemaObjectsVM.Items.Clear();
-            
+
             foreach (var schema in schemas)
             {
                 SchemaObjectsVM.Items.Add(new ComboCheckBoxItem<string>() { Text = schema, IsChecked = true, Value = schema });
@@ -165,8 +168,7 @@
             {
                 IsLoading = true;
 
-                var stopw = new System.Diagnostics.Stopwatch();
-                stopw.Start();
+                var sw = System.Diagnostics.Stopwatch.StartNew();
 
                 await Task.Run(() =>
                  {
@@ -174,13 +176,13 @@
                      SearchResultsVM = FilterResultService.Filter(_allDdResults, filter).Select(p => new SearchFilterResultVM(p, filter)).ToList();
                  }).ConfigureAwait(false);
 
-                Message = $"{SearchResultsVM.Count} Result(s) in {stopw.ElapsedMilliseconds} ms";
+                Message = $"{SearchResultsVM.Count} Result(s) in {sw.ElapsedMilliseconds} ms";
             }
             finally
             {
                 IsLoading = false;
             }
-        }       
+        }
 
         private bool CanExecuteSubmit()
         {

@@ -13,9 +13,9 @@
              d:DesignHeight="450" d:DesignWidth="1000">
     <UserControl.Resources>
         <ResourceDictionary>
+            <CollectionViewSource  x:Key="SearchResultsVM_VS" Source="{Binding SearchResultsVM}" IsLiveSortingRequested="True" />
             <BooleanToVisibilityConverter x:Key="VisibleIfTrueConverter" />
             <conv:HighlightToTextBlockConverter x:Key="HighlightToTextBlock" />
-            <ext:FlowDocumentScrollViewerDocumentHighlightBehavior x:Key="HighlightToFlowDocument" />
             <ContextMenu  x:Key="RowMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
                 <MenuItem Header="Locate in Object Explorer" CommandParameter="{Binding}" 
                   Command="{Binding DataContext.LocateItemCmd, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" />
@@ -26,18 +26,16 @@
             </ContextMenu>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/SSMSPlusCore;component/Ui/Design/DataGrid.xaml"/>
-
+                <ResourceDictionary Source="pack://application:,,,/SSMSPlusCore;component/Ui/Design/Forms.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-
-
     </UserControl.Resources>
 
 
 
     <Grid Margin="12" ext:GridExtensions.Structure="auto,auto,auto,*|*">
         <Grid Grid.Row="0" Background="Transparent" Margin="0,0,0,12" ext:GridExtensions.Structure="auto,auto|auto,auto,*">
-            <Label FontSize="26" VerticalAlignment="Center">SSMS Plus</Label>
+            <Label FontSize="22" Padding="0" Margin="0,0,5,0" VerticalAlignment="Center">SSMS Plus</Label>
             <TextBlock  Grid.Column="1" FontSize="12" VerticalAlignment="Center">Schema <LineBreak/> Search</TextBlock>
             <Separator Grid.Row="1" Grid.ColumnSpan="10"></Separator>
             <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
@@ -52,31 +50,41 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="1" ext:GridExtensions.Structure="auto,auto|100,2*,100,1*,100,2*" >
-            <Label Grid.Row="0">Filter :</Label>
-            <TextBox Name="Filter" Grid.Row="0" Grid.Column="1" Margin="0,0,0,10" Width="auto" Padding="4"  Text="{Binding Path=Filter,UpdateSourceTrigger=PropertyChanged,Delay=0}" IsEnabled="{Binding ControlsEnabled}"/>
-            <Label Grid.Row="0"  Grid.Column="2">Match on :</Label>
-            <combo:ComboCheckBox Grid.Row="0"  Grid.Column="3" Margin="0,0,0,10" Height="30" ViewModel="{Binding ComboMatchVM}" IsEnabled="{Binding ControlsEnabled}" />
+        <Grid Grid.Row="1" Margin="0,0,0,5" ext:GridExtensions.Structure="auto,auto|3*,1*,2*,1*" >
 
-            <Label Grid.Row="0"  Grid.Column="4">Object Types :</Label>
-            <combo:ComboCheckBox Grid.Row="0"  Grid.Column="5" Margin="0,0,0,10" Height="30" ViewModel="{Binding ComboObjectsVM}"  IsEnabled="{Binding ControlsEnabled}" />
+            <StackPanel Grid.Column="0" Margin="0,0,5,0">
+                <Label  Style="{StaticResource form_v_Label}">Filter:</Label>
+                <TextBox Name="Filter" Style="{StaticResource form_v_TextBox}" Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged, Delay=0}" IsEnabled="{Binding ControlsEnabled}"/>
+            </StackPanel>
 
-            <Label Grid.Row="1"  Grid.Column="0">Schema:</Label>
-            <combo:ComboCheckBox Grid.Row="1"  Grid.Column="1" Margin="0,0,0,10" Height="30" ViewModel="{Binding SchemaObjectsVM}" IsEnabled="{Binding ControlsEnabled}"/>
+            <StackPanel Grid.Column="1" Margin="0,0,5,0">
+                <Label Style="{StaticResource form_v_Label}" >Match on:</Label>
+                <combo:ComboCheckBox Style="{StaticResource form_v_ComboCheckBox}" ViewModel="{Binding ComboMatchVM}" IsEnabled="{Binding ControlsEnabled}" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="2" Margin="0,0,5,0">
+                <Label  Style="{StaticResource form_v_Label}">Object Types:</Label>
+                <combo:ComboCheckBox  Style="{StaticResource form_v_ComboCheckBox}" ViewModel="{Binding ComboObjectsVM}"  IsEnabled="{Binding ControlsEnabled}" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="3" >
+                <Label  Style="{StaticResource form_v_Label}">Schema:</Label>
+                <combo:ComboCheckBox Style="{StaticResource form_v_ComboCheckBox}" ViewModel="{Binding SchemaObjectsVM}" IsEnabled="{Binding ControlsEnabled}"/>
+            </StackPanel>
 
             <Grid.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding Path=ExecuteSearchCmd}"/>
             </Grid.InputBindings>
         </Grid>
 
-        <Label Grid.Row="2" Margin="0,0,0,10" Content="{Binding Path=Message}"></Label>
+        <Label Grid.Row="2" Padding="0" Margin="0,0,0,10" Content="{Binding Path=Message}"></Label>
 
         <loading:LoadingIndicator Grid.Row="2" Title="Indexing "
-                                       HorizontalAlignment="Left" Margin="0,0,0,10" Visibility="{Binding Path=IsIndexing, Converter={StaticResource VisibleIfTrueConverter}}"/>
+                                       HorizontalAlignment="Left" Margin="0,10,0,10" Visibility="{Binding Path=IsIndexing, Converter={StaticResource VisibleIfTrueConverter}}"/>
 
         <Grid Name="objectsGrid" Grid.Row="3" ext:GridExtensions.Structure="1*,1*|*">
-            <DataGrid  Grid.Row="0" MinHeight="100" Style="{StaticResource FastReadOnly}"                      
-                       ItemsSource="{Binding SearchResultsVM}"
+            <ext:EnhancedDataGrid  Grid.Row="0" MinHeight="100" Style="{StaticResource FastReadOnly}" BorderBrush="Black" 
+                       ItemsSource="{Binding Source={StaticResource SearchResultsVM_VS}}"
                        SelectedIndex="0"
                        SelectedValue="{Binding SelectedItem}"
                        IsEnabled="{Binding Path=ControlsEnabled}">
@@ -112,22 +120,22 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
-            </DataGrid>
+            </ext:EnhancedDataGrid>
 
-            <FlowDocumentScrollViewer   Grid.Row="1" Margin="0,10,0,0" BorderBrush="Black" BorderThickness="1" 
-                                        ext:FlowDocumentScrollViewerDocumentHighlightBehavior.HighlightContext="{Binding SelectedItem.FullPreviewHighlight}"                                      
-                                        >
+            <GridSplitter Grid.Row="1">
+                <GridSplitter.Resources>
+                    <ResourceDictionary Source="pack://application:,,,/SSMSPlusCore;component/Ui/Design/GridSplitterHorizontal.xaml"/>
+                </GridSplitter.Resources>
+            </GridSplitter>
+
+            <FlowDocumentScrollViewer Name="fdsvDefination"  Grid.Row="1" Margin="0,10,0,0" BorderBrush="Black" BorderThickness="1" 
+                                        ext:FlowDocumentScrollViewerDocumentHighlightBehavior.HighlightContext="{Binding SelectedItem.FullPreviewHighlight}">
+
                 <FlowDocumentScrollViewer.Resources>
                     <ResourceDictionary Source="pack://application:,,,/SSMSPlusCore;component/Ui/Design/SqlFlowDocument.xaml"/>
                 </FlowDocumentScrollViewer.Resources>
             </FlowDocumentScrollViewer>
 
-            <GridSplitter Height="10" HorizontalAlignment="Stretch" Margin="0"
-                      VerticalAlignment="Top"
-                      ResizeDirection="Rows"
-                      ShowsPreview="False"
-                      Grid.Row="1">
-            </GridSplitter>
         </Grid>
     </Grid>
 

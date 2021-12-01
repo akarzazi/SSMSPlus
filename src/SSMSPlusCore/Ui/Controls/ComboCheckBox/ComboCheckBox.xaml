@@ -58,11 +58,6 @@
                         IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                         Focusable="false"                           
                         ClickMode="Press" HorizontalContentAlignment="Left" >
-                            <!--<ToggleButton.Triggers  >
-                                <Trigger Property="IsEnabled" Value="false">
-                                    <Setter  Property="back" Value="95"/>
-                                </Trigger>
-                            </ToggleButton.Triggers>-->
                             <ToggleButton.Template>
                                 <ControlTemplate TargetType="ToggleButton">
                                     <Grid>
@@ -73,14 +68,12 @@
                                         <Border
                                           x:Name="Border" 
                                           Grid.ColumnSpan="2"
-                                          CornerRadius="2"
                                           Background="White"
                                           BorderBrush="Black"
                                           BorderThickness="1,1,1,1" />
                                         <Border 
                                           x:Name="BorderComp" 
                                           Grid.Column="0"
-                                          CornerRadius="2" 
                                           Margin="1" 
                                           Background="White"
                                           BorderBrush="Black"
@@ -151,7 +144,6 @@
                             <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95"/>
                         </Trigger>
                         <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="true">
-                            <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="4"/>
                             <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0"/>
                         </Trigger>
                     </ControlTemplate.Triggers>

@@ -65,14 +65,14 @@
 
             if (e.OldValue != null)
             {
-                var coll = (RunStream)e.OldValue;
-                coll.OnMessage -= OnMessage;
+                var runStream = (RunStream)e.OldValue;
+                runStream.OnMessage -= OnMessage;
             }
 
             if (e.NewValue != null)
             {
-                var coll = (RunStream)e.NewValue;
-                coll.OnMessage += OnMessage;
+                var runStream = (RunStream)e.NewValue;
+                runStream.OnMessage += OnMessage;
             }
         }
 

@@ -15,6 +15,7 @@
 
     <UserControl.Resources>
         <ResourceDictionary>
+            <CollectionViewSource  x:Key="QueryItemsVM_VS" Source="{Binding QueryItemsVM}" IsLiveSortingRequested="True" />
             <conv:HighlightToTextBlockConverter x:Key="HighlightToTextBlock" />
             <ContextMenu  x:Key="RowMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
                 <MenuItem Header="Open script" CommandParameter="{Binding}"
@@ -22,6 +23,7 @@
             </ContextMenu>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/SSMSPlusCore;component/Ui/Design/DataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/SSMSPlusCore;component/Ui/Design/Forms.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -29,15 +31,16 @@
     <UserControl.InputBindings>
         <KeyBinding Key="F5" Command="{Binding Path=RequestItemsCommand}"/>
     </UserControl.InputBindings>
-    
+
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding ViewLoadedCommand}" x:Name="interactivityFix" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
+    
     <Grid Margin="12" ext:GridExtensions.Structure="auto,auto,auto,*|*">
         <Grid Grid.Row="0" Background="Transparent" Margin="0,0,0,12" ext:GridExtensions.Structure="auto,auto|auto,auto,*">
-            <Label FontSize="26" VerticalAlignment="Center">SSMS Plus</Label>
+            <Label FontSize="22" Padding="0" Margin="0,0,5,0" VerticalAlignment="Center">SSMS Plus</Label>
             <TextBlock  Grid.Column="1" FontSize="12" VerticalAlignment="Center">Execution <LineBreak/> History</TextBlock>
             <Separator Grid.Row="1" Grid.ColumnSpan="10"></Separator>
             <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
@@ -45,34 +48,44 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="1" ext:GridExtensions.Structure="auto,auto,auto,*|100,1*,100,1*,100,1*" >
-            <Label Grid.Row="0">From :</Label>
-            <DatePicker Grid.Row="0" Grid.Column="1" Margin="0,0,0,10" Width="150" HorizontalAlignment="Left" SelectedDate="{Binding Path=StartDate,UpdateSourceTrigger=PropertyChanged}"/>
+        <Grid Grid.Row="1" Margin="0,0,0,5" ext:GridExtensions.Structure="auto,auto|1*,1*,1*,1*" >
+            <StackPanel Grid.Column="0" Margin="0,0,5,10">
+                <Label Style="{StaticResource form_v_Label}" >From:</Label>
+                <DatePicker Style="{StaticResource form_v_DatePicker}"
+                            SelectedDate="{Binding Path=StartDate,UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <StackPanel  Grid.Row="0" Grid.Column="1" Margin="0,0,5,0">
+                <Label Style="{StaticResource form_v_Label}">To:</Label>
+                <DatePicker Style="{StaticResource form_v_DatePicker}" SelectedDate="{Binding Path=EndDate,UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
 
-            <Label Grid.Row="0"  Grid.Column="2">Server :</Label>
-            <TextBox Grid.Row="0" Grid.Column="3" Margin="0,0,0,10" Width="150" Padding="4" HorizontalAlignment="Left" Text="{Binding Path=ServerFilter,UpdateSourceTrigger=PropertyChanged}"/>
-
-            <Label Grid.Row="0"  Grid.Column="4">Database :</Label>
-            <TextBox Grid.Row="0" Grid.Column="5" Margin="0,0,0,10" Width="150" Padding="4" HorizontalAlignment="Left" Text="{Binding Path=DbFilter,UpdateSourceTrigger=PropertyChanged}"/>
-
-            <Label Grid.Row="1">To:</Label>
-            <DatePicker Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" Width="150" HorizontalAlignment="Left" SelectedDate="{Binding Path=EndDate,UpdateSourceTrigger=PropertyChanged}"/>
-
-            <Label Grid.Row="1" Grid.Column="2" >Query:</Label>
-            <TextBox Name="QueryFilter" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="4" Margin="0,0,0,10" Width="400" Padding="4" HorizontalAlignment="Left" 
+            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,5,0">
+                <Label  Style="{StaticResource form_v_Label}">Query:</Label>
+                <TextBox Name="QueryFilter" Style="{StaticResource form_v_TextBox}"
                      Text="{Binding Path=QueryFilter,UpdateSourceTrigger=PropertyChanged}"
                      FocusManager.FocusedElement="{Binding RelativeSource={RelativeSource Self}}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,0,5,0">
+                <Label  Style="{StaticResource form_v_Label}">Database:</Label>
+                <TextBox Style="{StaticResource form_v_TextBox}" Text="{Binding Path=DbFilter,UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Row="1" Grid.Column="3" Margin="0,0,5,0">
+                <Label  Style="{StaticResource form_v_Label}">Server:</Label>
+                <TextBox Style="{StaticResource form_v_TextBox}" Text="{Binding Path=ServerFilter, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
 
             <Grid.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding Path=RequestItemsCommand}"/>
             </Grid.InputBindings>
         </Grid>
 
-        <Label Grid.Row="2" Margin="0,0,0,10" Content="{Binding Path=Message}"></Label>
+        <Label Grid.Row="2" Padding="0" Margin="0,0,0,10" Content="{Binding Path=Message}"></Label>
 
         <Grid Name="objectsGrid" Grid.Row="3" ext:GridExtensions.Structure="1*,1*|*">
-            <DataGrid Grid.Row="0" MinHeight="100" Style="{StaticResource FastReadOnly}"
-                      ItemsSource="{Binding QueryItemsVM}"
+            <ext:EnhancedDataGrid Grid.Row="0" MinHeight="100" Style="{StaticResource FastReadOnly}"
+                      ItemsSource="{Binding Source={StaticResource QueryItemsVM_VS}}"
                       SelectedIndex="0"
                       SelectedValue="{Binding SelectedItem}">
                 <DataGrid.RowStyle>
@@ -86,7 +99,6 @@
                 </DataGrid.Resources>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Date" Binding="{Binding SearchResult.ExecutionDateLocalStr}" Width="150" />
-                    <!--<DataGridTextColumn Header="Server" Binding="{Binding ServerHighlight}"  Width="150"/>-->
                     <DataGridTemplateColumn  Width="150" Header="Server" SortMemberPath="SearchResult.QueryItem.Server" ClipboardContentBinding="{Binding SearchResult.QueryItem.Server}" >
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -108,11 +120,8 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-
-                    <!--<DataGridTextColumn Header="Database" Binding="{Binding DatabaseHighlight}"  Width="150"/>
-                    <DataGridTextColumn Header="Query" Binding="{Binding SmallQueryHighlight}"  Width="*"/>-->
                 </DataGrid.Columns>
-            </DataGrid>
+            </ext:EnhancedDataGrid>
 
             <FlowDocumentScrollViewer   Grid.Row="1" Margin="0,10,0,0" BorderBrush="Black" BorderThickness="1" 
                                         ext:FlowDocumentScrollViewerDocumentHighlightBehavior.HighlightContext="{Binding SelectedItem.QueryHighlight}"                                      
@@ -122,11 +131,10 @@
                 </FlowDocumentScrollViewer.Resources>
             </FlowDocumentScrollViewer>
 
-            <GridSplitter Height="10" HorizontalAlignment="Stretch" Margin="0"
-                      VerticalAlignment="Top"
-                      ResizeDirection="Rows"
-                      ShowsPreview="False"
-                      Grid.Row="1">
+            <GridSplitter Grid.Row="1">
+                <GridSplitter.Resources>
+                    <ResourceDictionary Source="pack://application:,,,/SSMSPlusCore;component/Ui/Design/GridSplitterHorizontal.xaml"/>
+                </GridSplitter.Resources>
             </GridSplitter>
         </Grid>
     </Grid>

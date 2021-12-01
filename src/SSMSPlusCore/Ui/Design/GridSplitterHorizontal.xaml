@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style TargetType="GridSplitter">
+        <Setter Property="Height" Value="10" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="ResizeDirection" Value="Rows" />
+        <Setter Property="ShowsPreview" Value="False" />
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type GridSplitter}">
+                    <Grid Margin="0,0,0,0">
+                        <TextBlock HorizontalAlignment="Center" TextAlignment="Center" Margin="0,0,0,2" VerticalAlignment="Center" Text="•••" FontSize="14" Foreground="Black"/>
+                        <Rectangle Fill="Transparent"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

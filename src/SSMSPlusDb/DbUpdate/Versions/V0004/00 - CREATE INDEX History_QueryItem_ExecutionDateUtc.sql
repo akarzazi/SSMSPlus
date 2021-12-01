@@ -1,0 +1,1 @@
+﻿CREATE INDEX History_QueryItem_ExecutionDateUtc ON 'History.QueryItem' (ExecutionDateUtc);

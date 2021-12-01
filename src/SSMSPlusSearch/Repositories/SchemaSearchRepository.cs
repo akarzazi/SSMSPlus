@@ -1,8 +1,11 @@
 ﻿using Dapper;
+
 using SSMSPlusCore.Database;
 using SSMSPlusCore.Integration.Connection;
 using SSMSPlusCore.Utils;
+
 using SSMSPlusSearch.Entities;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -138,8 +141,6 @@ DELETE  FROM 'SchemaSearch.Dbs' WHERE dbid = @dbid;";
             foreach (var index in dbIndices)
             {
                 index.Columns = columnsByIndexId[ValueTuple.Create(index.OwnerId, index.IndexNumber)].ToArray();
-                if (index.Columns.Length == 0)
-                    throw new Exception(index.Name);
             }
         }
 
@@ -166,30 +167,6 @@ DELETE  FROM 'SchemaSearch.Dbs' WHERE dbid = @dbid;";
             {
                 index.Parent = dbobjecstByID[index.OwnerId];
             }
-        }
-
-        private ObjectSearchTarget[] CreateDbObjectsSearchTargets(DbObject[] dbobjecst)
-        {
-            List<ObjectSearchTarget> list = new List<ObjectSearchTarget>();
-            foreach (var obj in dbobjecst)
-            {
-                var instance = new ObjectSearchTarget(obj);
-                list.Add(instance);
-            }
-
-            return list.ToArray();
-        }
-
-        private ObjectSearchTarget[] CreateDbObjectsSearchTargets(Dictionary<int, DbObject> dbobjecstByID)
-        {
-            List<ObjectSearchTarget> list = new List<ObjectSearchTarget>();
-            foreach (var obj in dbobjecstByID.Values)
-            {
-                var instance = new ObjectSearchTarget(obj);
-                list.Add(instance);
-            }
-
-            return list.ToArray();
         }
     }
 }

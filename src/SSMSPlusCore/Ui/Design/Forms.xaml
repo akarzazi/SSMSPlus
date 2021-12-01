@@ -1,0 +1,25 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:combo="clr-namespace:SSMSPlusCore.Ui.Controls.ComboCheckBox">
+
+    <Style TargetType="Label" x:Key="form_v_Label">
+        <Setter Property="Padding" Value="0,0,0,2" />
+    </Style>
+
+    <Style TargetType="TextBox" x:Key="form_v_TextBox">
+        <Setter Property="Height" Value="26" />
+        <Setter Property="Padding" Value="4" />
+    </Style>
+
+    <Style TargetType="combo:ComboCheckBox" x:Key="form_v_ComboCheckBox">
+        <Setter Property="Height" Value="26" />
+    </Style>
+    
+    <Style TargetType="DatePicker" x:Key="form_v_DatePicker">
+        <Setter Property="Height" Value="26" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Width" Value="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type FrameworkElement}}}" />
+        <Setter Property="MaxWidth" Value="250" />
+    </Style>
+    
+</ResourceDictionary>

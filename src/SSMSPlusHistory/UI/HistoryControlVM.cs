@@ -1,12 +1,16 @@
 ﻿namespace SSMSPlusHistory.UI.VM
 {
     using Microsoft.SqlServer.Management.UI.VSIntegration;
+
     using SSMSPlusCore.App;
     using SSMSPlusCore.Integration;
     using SSMSPlusCore.Ui;
+    using SSMSPlusCore.Utils;
+
     using SSMSPlusHistory.Entities.Search;
     using SSMSPlusHistory.Repositories;
     using SSMSPlusHistory.Services.Filtering;
+
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -31,7 +35,7 @@
             _itemsRepository = itemsRepository;
             _versionProvider = versionProvider;
             _serviceCacheIntegration = serviceCacheIntegration;
-            RequestItemsCommand = new AsyncCommand(ExecuteRequestItemsAsync, CanExecuteSubmit, this.HandleError);
+            RequestItemsCommand = new AsyncCommand(FuncHelper.DebounceAsync(ExecuteRequestItemsAsync, 100), CanExecuteSubmit, this.HandleError);
             ViewLoadedCommand = new AsyncCommand(OnViewLoadedAsync, CanExecuteSubmit, this.HandleError);
             OpenScriptCmd = new Command<SearchFilterResultVM>(OpenScript, () => true, HandleError);
             InitDefaults();
@@ -62,11 +66,13 @@
             {
                 IsLoading = true;
 
+                var sw = System.Diagnostics.Stopwatch.StartNew();
+
                 var filterContext = new FilterContext(QueryFilter, ServerFilter, DbFilter, StartDate.ToUniversalTime(), EndDate.ToUniversalTime());
                 var result = await _itemsRepository.FindItems(filterContext);
                 QueryItemsVM = result.Select(q => new ScriptSearchTarget(q)).Select(p => new SearchFilterResultVM(p, filterContext)).ToList();
-    
-                Message = $"{QueryItemsVM.Count} Result(s).";
+
+                Message = $"{QueryItemsVM.Count} Result(s) in {sw.ElapsedMilliseconds} ms";
             }
             finally
             {

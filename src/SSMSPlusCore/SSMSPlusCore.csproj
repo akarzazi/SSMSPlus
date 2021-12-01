@@ -46,7 +46,7 @@
       <HintPath>..\packages\Dapper.StrongName.1.60.1\lib\net451\Dapper.StrongName.dll</HintPath>
     </Reference>
     <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -227,6 +227,7 @@
     <Compile Include="Ui\Controls\LoadingIndicator\LoadingIndicator.xaml.cs">
       <DependentUpon>LoadingIndicator.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Ui\Extensions\EnhancedDataGrid.cs" />
     <Compile Include="Ui\Text\RunStream.cs" />
     <Compile Include="Ui\Controls\ComboCheckBox\ComboCheckBox.xaml.cs">
       <DependentUpon>ComboCheckBox.xaml</DependentUpon>
@@ -283,6 +284,14 @@
     <Page Include="Ui\Controls\LoadingIndicator\LoadingIndicator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Ui\Design\Forms.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Ui\Design\GridSplitterHorizontal.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Ui\Design\DataGrid.xaml">
       <Generator>MSBuild:Compile</Generator>

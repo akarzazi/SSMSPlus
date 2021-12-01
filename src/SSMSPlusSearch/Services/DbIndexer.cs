@@ -19,7 +19,6 @@
         private SchemaSearchRepository _schemaSearchRepository;
 
         private AsyncLock _asyncLock = new AsyncLock();
-
         public DbIndexer(SchemaSearchRepository schemaSearchRepository)
         {
             _schemaSearchRepository = schemaSearchRepository;
@@ -51,12 +50,8 @@
                 throw new Exception("Cannot index system db: " + dbConnectionString.Database);
             }
 
-            // await Task.
-
             using (await _asyncLock.LockAsync())
             {
-                await Task.Delay(6000);
-
                 var dbId = await DbExistsAsync(dbConnectionString);
                 if (dbId > 0)
                     return dbId;
@@ -79,8 +74,8 @@ AS
 SELECT o.object_id AS 'objectId' , o.type_desc as 'type', schema_name(o.schema_id) AS 'schemaName', o.name, DefinitionInfo.definition, o.modify_date as ModificationDate, Parent.object_id as parentObjectId
 FROM sys.objects AS o
 LEFT JOIN DefinitionInfo ON DefinitionInfo.object_id = o.object_id
-LEFT JOIN sys.objects AS Parent ON Parent.object_id = o.parent_object_id 
-WHERE o.is_ms_shipped = 0";
+LEFT JOIN sys.objects AS Parent ON Parent.object_id = o.parent_object_id and Parent.is_ms_shipped = 0
+WHERE o.is_ms_shipped = 0 AND NOT (o.parent_object_id > 0 AND Parent.object_id IS NULL)";
 
                 string columnsQuery = @"
 SELECT c.id as 'TableId', c.name,  t.name AS 'datatype', c.prec AS 'precision', c.scale AS 'scale', cc.definition
@@ -129,7 +124,6 @@ ORDER BY
                     var dbIndices = (await connection.QueryAsync<DbIndex>(indicesQuery)).ToArray();
                     var dbIndicesColumns = (await connection.QueryAsync<DbIndexColumn>(indicesColumnsQuery)).ToArray();
 
-                    //  await Task.Delay(5000);
                     var dbDefinition = new DbDefinition()
                     {
                         DbName = dbConnectionString.Database,

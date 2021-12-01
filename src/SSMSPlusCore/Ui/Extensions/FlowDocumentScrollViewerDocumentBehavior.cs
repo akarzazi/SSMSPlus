@@ -1,8 +1,5 @@
 ﻿using SSMSPlusCore.Ui.Search;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,8 +10,6 @@ namespace SSMSPlusCore.Ui.Extensions
 {
     public class FlowDocumentScrollViewerDocumentHighlightBehavior
     {
-        private static SolidColorBrush brush = new SolidColorBrush(Colors.Gold);
-
         public static TextFragments GetHighlightContext(DependencyObject obj)
         {
             return (TextFragments)obj.GetValue(HighlightContextProperty);

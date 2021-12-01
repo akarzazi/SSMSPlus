@@ -12,12 +12,10 @@
     <Grid Margin="12" ext:GridExtensions.Structure="*,*|*">
         <Grid  ext:GridExtensions.Structure="auto,auto,auto|*">
             <Grid Grid.Row="0" Background="Transparent" Margin="0,0,0,12" ext:GridExtensions.Structure="auto,auto|auto,auto,*">
-                <Label FontSize="26" VerticalAlignment="Center">SSMS Plus</Label>
+                <Label FontSize="22" Padding="0" Margin="0,0,5,0" VerticalAlignment="Center">SSMS Plus</Label>
                 <TextBlock  Grid.Column="1" FontSize="12" VerticalAlignment="Center">About <LineBreak/> Preferences</TextBlock>
                 <Separator Grid.Row="1" Grid.ColumnSpan="10"></Separator>
-
             </Grid>
-
 
             <GroupBox Grid.Row="2">
                 <GroupBox.Header>

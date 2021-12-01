@@ -14,6 +14,7 @@ It extends SSMS with a handful set of features:
   * [Prerequisites](#prerequisites)
   * [Download](#download)
   * [Install](#install)
+  * [Update](#update)
   * [Launch](#launch)
 - [Features](#features)
   * [Query History](#query-history)
@@ -35,17 +36,36 @@ It extends SSMS with a handful set of features:
 SQL Server Management Studio 18
 
 ## Download
-Grap the latest build archive from the [Releases](https://github.com/akarzazi/SSMSPlus/releases) page.
+Grab the latest build archive from the [Releases](https://github.com/akarzazi/SSMSPlus/releases) page.
 
 ## Install
-Extract the archive content to the SSMS install location :
+
+> SQL Server Management Studio extensions cannot be installed via VSIX Installer under SSMS 18.x. See
+> https://docs.microsoft.com/en-us/sql/ssms/install-extensions-in-sql-server-management-studio-ssms?view=sql-server-ver15|
+
+The release is an SFX package, extract the archive content to the SSMS install location.
+
+On the extract dialog, fill the path of the extensions directory.
+
+`C:\Program Files (x86)\Microsoft SQL Server Management Studio 18\Common7\IDE\Extensions`
+
+![SSMS Plus Extension dlls](docs/illustrations/install-sfx-extract.png?raw=true "SSMS Plus Extension dlls")
+
+**Note:** you might need to extract the SFX as admin
+
+It should create an `SSMSPlus` folder, look like the following.
+![SSMS Plus Extension dlls](docs/illustrations/install-folder-screen.png?raw=true "SSMS Plus Extension dlls")
+
+## Update
+
+Close SQL Server Management Studio.
+
+Delete the SSMSPlus extension directory:
 
 `C:\Program Files (x86)\Microsoft SQL Server Management Studio 18\Common7\IDE\Extensions\SSMSPlus`
 
-It should look like the following.
-![SSMS Plus Extension dlls](docs/illustrations/install-folder-screen.png?raw=true "SSMS Plus Extension dlls")
+Follow the install steps.
 
-**Note:** you might need to extract the SFX as admin, if you don't have write access to the ssms extensions folder
 ## Launch
 A new top menu "SSMS Plus" will be available.
 
@@ -90,7 +110,7 @@ You can contribute in the following ways :
 
 ## Project Goals
 ### Goals
-* Performance: Provide a **lightweight** plugin to bring to SSMS thoses missing features.
+* Performance: Provide a **lightweight** plugin to bring to SSMS those missing features.
 * Performance: React to events in an async and **non blocking** way.
 * Minimal:  Focus on **handy** features that matter for the community.
 * Stable: Do not implement features using **`Reflection`** heavy stuff.
@@ -98,8 +118,8 @@ You can contribute in the following ways :
 
 ### Non Goals
 * Implement domain specific features. (ex: integrate with FTP, Azure Services)
-* Implement heavy or obstrusive features like intellisence.
-* Seek for compatibility with an old edtion of SQL Server or SSMS.
+* Implement heavy features like intellisense.
+* Seek for compatibility with an old edition of SQL Server or SSMS.
 
 
 ## Debugging
@@ -114,7 +134,7 @@ This section explains how to setup Visual Studio to debug the plugin within an S
 
 ![SSMS Plus Debug Startup](docs/illustrations/debug-vs-startup.png?raw=true "Documents Export")
 
-2.  In the VSIX section of the main project "SSMSPlus", configure the deployement path for the plugin. 
+2.  In the VSIX section of the main project "SSMSPlus", configure the deployment path for the plugin. 
 
 `C:\Program Files (x86)\Microsoft SQL Server Management Studio 18\Common7\IDE\Extensions\SSMSPlus`
 ![SSMS Plus Documents Export](docs/illustrations/debug-vs-copy-vsix.png?raw=true "Documents Export")

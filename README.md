@@ -53,7 +53,7 @@ On the extract dialog, fill the path of the extensions directory.
 
 **Note:** you might need to extract the SFX as admin
 
-It should create an `SSMSPlus` folder, look like the following.
+It should create an `SSMSPlus` folder like the following.
 ![SSMS Plus Extension dlls](docs/illustrations/install-folder-screen.png?raw=true "SSMS Plus Extension dlls")
 
 ## Update

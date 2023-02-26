@@ -1,5 +1,5 @@
 # SSMSPlus
-SSMS Plus is a productivity extension for SQL Server Management Studio 18.
+SSMS Plus is a productivity extension for SQL Server Management Studio 18 / 19.
 
 It extends SSMS with a handful set of features:
 
@@ -33,21 +33,28 @@ It extends SSMS with a handful set of features:
 
 # Getting started
 ## Prerequisites
-SQL Server Management Studio 18
+SQL Server Management Studio 18 / 19
 
 ## Download
-Grab the latest build archive from the [Releases](https://github.com/akarzazi/SSMSPlus/releases) page.
+### For SSMS 19
+
+Get the latest build from the [Releases](https://github.com/akarzazi/SSMSPlus/releases) page.
+
+### For SSMS 18
+
+Get this release: 
+https://github.com/akarzazi/SSMSPlus/releases/tag/4.0
 
 ## Install
 
-> SQL Server Management Studio extensions cannot be installed via VSIX Installer under SSMS 18.x. See
+> SQL Server Management Studio extensions cannot be installed via VSIX Installer under SSMS 19.x. See
 > https://docs.microsoft.com/en-us/sql/ssms/install-extensions-in-sql-server-management-studio-ssms?view=sql-server-ver15|
 
 The release is an SFX package, extract the archive content to the SSMS install location.
 
 On the extract dialog, fill the path of the extensions directory.
 
-`C:\Program Files (x86)\Microsoft SQL Server Management Studio 18\Common7\IDE\Extensions`
+`C:\Program Files (x86)\Microsoft SQL Server Management Studio 19\Common7\IDE\Extensions`
 
 ![SSMS Plus Extension dlls](docs/illustrations/install-sfx-extract.png?raw=true "SSMS Plus Extension dlls")
 
@@ -62,7 +69,7 @@ Close SQL Server Management Studio.
 
 Delete the SSMSPlus extension directory:
 
-`C:\Program Files (x86)\Microsoft SQL Server Management Studio 18\Common7\IDE\Extensions\SSMSPlus`
+`C:\Program Files (x86)\Microsoft SQL Server Management Studio 19\Common7\IDE\Extensions\SSMSPlus`
 
 Follow the install steps.
 
@@ -130,13 +137,13 @@ This section explains how to setup Visual Studio to debug the plugin within an S
 
 1.  In the Debug section of the main project "SSMSPlus", setup your SSMS path as the startup program.
 
-`C:\Program Files (x86)\Microsoft SQL Server Management Studio 18\Common7\IDE\Ssms.exe`
+`C:\Program Files (x86)\Microsoft SQL Server Management Studio 19\Common7\IDE\Ssms.exe`
 
 ![SSMS Plus Debug Startup](docs/illustrations/debug-vs-startup.png?raw=true "Documents Export")
 
 2.  In the VSIX section of the main project "SSMSPlus", configure the deployment path for the plugin. 
 
-`C:\Program Files (x86)\Microsoft SQL Server Management Studio 18\Common7\IDE\Extensions\SSMSPlus`
+`C:\Program Files (x86)\Microsoft SQL Server Management Studio 19\Common7\IDE\Extensions\SSMSPlus`
 ![SSMS Plus Documents Export](docs/illustrations/debug-vs-copy-vsix.png?raw=true "Documents Export")
 
 3. That's All ! You may start your the debugging session.

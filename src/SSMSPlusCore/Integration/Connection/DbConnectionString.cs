@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Data.SqlClient;
+    using System.Text.RegularExpressions;
 
     public class DbConnectionString : IEquatable<DbConnectionString>
     {
@@ -14,7 +15,7 @@
 
         public DbConnectionString(string connectionString, string database)
         {
-            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionString);
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(NormalizeToLegacyConnectionString(connectionString));
             if (database != null)
             {
                 builder.InitialCatalog = database;
@@ -51,6 +52,31 @@
                 return false;
 
             return this.Equals(cnx);
+        }
+
+        private static readonly (string @new, string old)[] SqlPropertyRenames = new (string, string)[]
+        {
+            ("Application Intent", "ApplicationIntent"),
+            ("Connect Retry Count", "ConnectRetryCount"),
+            ("Connect Retry Interval", "ConnectRetryInterval"),
+            ("Pool Blocking Period", "PoolBlockingPeriod"),
+            ("Multiple Active Result Sets", "MultipleActiveResultSets"),
+            ("Multi Subnet Failover", "MultiSubnetFailover"),
+            ("Transparent Network IP Resolution", "TransparentNetworkIPResolution"),
+            ("Trust Server Certificate", "TrustServerCertificate")
+        };
+
+        public static string NormalizeToLegacyConnectionString(string connectionString)
+        {
+            if (!string.IsNullOrWhiteSpace(connectionString))
+            {
+                foreach (var replacement in SqlPropertyRenames)
+                {
+                    connectionString = Regex.Replace(connectionString, replacement.@new, replacement.old, RegexOptions.IgnoreCase);
+                }
+            }
+
+            return connectionString;
         }
     }
 }

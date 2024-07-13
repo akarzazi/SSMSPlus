@@ -33,12 +33,17 @@ It extends SSMS with a handful set of features:
 
 # Getting started
 ## Prerequisites
-SQL Server Management Studio 18 / 19
+SQL Server Management Studio 18 / 19 / 20
 
 ## Download
-### For SSMS 19
+### For SSMS 20
 
 Get the latest build from the [Releases](https://github.com/akarzazi/SSMSPlus/releases) page.
+
+### For SSMS 19
+
+Get this release: 
+https://github.com/akarzazi/SSMSPlus/releases/tag/5.0
 
 ### For SSMS 18
 
